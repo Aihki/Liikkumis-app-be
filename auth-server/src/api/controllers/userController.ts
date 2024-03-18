@@ -14,7 +14,7 @@ import {
   modifyUser,
 } from '../models/userModel';
 import {TokenContent, User, UserWithNoPassword} from '../../types/DBTypes';
-import {validationResult} from 'express-validator';
+import { validationResult } from 'express-validator';
 
 const salt = bcrypt.genSaltSync(12);
 
@@ -45,7 +45,7 @@ const userGet = async (
   if (!errors.isEmpty()) {
     const messages: string = errors
       .array()
-      .map((error) => `${error.msg}: ${error.param}`)
+      .map((error: any) => `${error.msg}: ${error.param}`)
       .join(', ');
     console.log('userGet validation', messages);
     next(new CustomError(messages, 400));
@@ -72,7 +72,7 @@ const userPost = async (
   if (!errors.isEmpty()) {
     const messages: string = errors
       .array()
-      .map((error) => `${error.msg}: ${error.param}`)
+      .map((error: any) => `${error.msg}: ${error.param}`)
       .join(', ');
     console.log('userPost validation', messages);
     next(new CustomError(messages, 400));
@@ -110,7 +110,7 @@ const userPut = async (
   if (!errors.isEmpty()) {
     const messages: string = errors
       .array()
-      .map((error) => `${error.msg}: ${error.param}`)
+      .map((error: any) => `${error.msg}: ${error.param}`)
       .join(', ');
     console.log('userPut validation', messages);
     next(new CustomError(messages, 400));
@@ -127,7 +127,7 @@ const userPut = async (
 
     console.log('userPut', userFromToken, user);
 
-    const result = await modifyUser(user, userFromToken.user_id);
+    const result = await modifyUser(user, userFromToken.userId);
 
     if (!result) {
       next(new CustomError('User not found', 404));
@@ -155,7 +155,7 @@ const userDelete = async (
     const userFromToken = res.locals.user;
     console.log('user from token', userFromToken);
 
-    const result = await deleteUser(userFromToken.user_id);
+    const result = await deleteUser(userFromToken.userId);
 
     if (!result) {
       next(new CustomError('User not found', 404));
@@ -177,7 +177,7 @@ const userPutAsAdmin = async (
   if (!errors.isEmpty()) {
     const messages: string = errors
       .array()
-      .map((error) => `${error.msg}: ${error.param}`)
+      .map((error: any) => `${error.msg}: ${error.param}`)
       .join(', ');
     console.log('userPutAsAdmin validation', messages);
     next(new CustomError(messages, 400));
@@ -185,7 +185,7 @@ const userPutAsAdmin = async (
   }
 
   try {
-    if (res.locals.user.level_name !== 'Admin') {
+    if (res.locals.user.levelName !== 'Admin') {
       next(new CustomError('You are not authorized to do this', 401));
       return;
     }
@@ -220,7 +220,7 @@ const userDeleteAsAdmin = async (
   if (!errors.isEmpty()) {
     const messages: string = errors
       .array()
-      .map((error) => `${error.msg}: ${error.param}`)
+      .map((error: any) => `${error.msg}: ${error.param}`)
       .join(', ');
     console.log('userDeleteAsAdmin validation', messages);
     next(new CustomError(messages, 400));
@@ -228,7 +228,7 @@ const userDeleteAsAdmin = async (
   }
 
   try {
-    if (res.locals.user.level_name !== 'Admin') {
+    if (res.locals.user.levelName !== 'Admin') {
       next(new CustomError('You are not authorized to do this', 401));
       return;
     }
@@ -253,7 +253,7 @@ const checkToken = async (
 ) => {
   const userFromToken = res.locals.user;
   // check if user exists in database
-  const user = await getUserById(userFromToken.user_id);
+  const user = await getUserById(userFromToken.userId);
   if (!user) {
     next(new CustomError('User not found', 404));
     return;
@@ -275,7 +275,7 @@ const checkEmailExists = async (
   if (!errors.isEmpty()) {
     const messages: string = errors
       .array()
-      .map((error) => `${error.msg}: ${error.param}`)
+      .map((error: any) => `${error.msg}: ${error.param}`)
       .join(', ');
     console.log('checkEmailExists validation', messages);
     next(new CustomError(messages, 400));
@@ -300,7 +300,7 @@ const checkUsernameExists = async (
   if (!errors.isEmpty()) {
     const messages: string = errors
       .array()
-      .map((error) => `${error.msg}: ${error.param}`)
+      .map((error: any) => `${error.msg}: ${error.param}`)
       .join(', ');
     console.log('checkUsernameExists validation', messages);
     next(new CustomError(messages, 400));

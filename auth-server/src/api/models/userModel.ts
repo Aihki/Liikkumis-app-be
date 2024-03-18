@@ -5,27 +5,26 @@ import {UserDeleteResponse} from '../../types/MessageTypes';
 
 const getUserById = async (id: number): Promise<UserWithNoPassword | null> => {
   try {
-    const [rows] = await promisePool.execute(
+    const [rows] = await promisePool.execute<RowDataPacket[]>(
       `
       SELECT
-        Users.userId,
+        Users.user_Id,
         Users.username,
         Users.email,
-        Users.createdAt,
-        UserLevels.levelName
+        Users.created_at,
+        UserLevels.level_name
       FROM Users
-      JOIN UserLevels ON Users.userLevelId = UserLevels.LevelId
-      WHERE Users.userId = ?
+      JOIN UserLevels ON Users.user_level_id = UserLevels.level_id
+      WHERE Users.user_id = ?
     `,
       [id]
     );
-
+   
     if (rows.length === 0) {
       return null;
     }
     
-    const result = rows as RowDataPacket[] & UserWithNoPassword[];
-    return result[0];
+    return rows[0] as UserWithNoPassword; 
   } catch (e) {
     console.error('getUserById error', e instanceof Error ? e.message : '');
     throw e;
@@ -37,13 +36,13 @@ const getAllUsers = async (): Promise<UserWithNoPassword[] | null> => {
     const [rows] = await promisePool.execute(
       `
       SELECT
-        Users.userId,
+        Users.user_id,
         Users.username,
         Users.email,
-        Users.createdAt,
-        UserLevels.levelName
+        Users.created_at,
+        UserLevels.level_name
       FROM Users
-      JOIN UserLevels ON Users.userLevelId = UserLevels.LevelId
+      JOIN UserLevels ON Users.user_level_id = UserLevels.level_id
       `
     );
     const users: RowDataPacket[] & UserWithNoPassword[] = rows as RowDataPacket[] & UserWithNoPassword[];
@@ -64,14 +63,14 @@ const getUserByEmail = async (email: string): Promise<UserWithLevel | null> => {
     const [rows] = await promisePool.execute(
       `
       SELECT
-        Users.userId,
+        Users.user_id,
         Users.username,
         Users.password,
         Users.email,
-        Users.createdAt,
-        UserLevels.levelName
+        Users.created_at,
+        UserLevels.level_name
       FROM Users
-      JOIN UserLevels ON Users.userLevelId = UserLevels.LevelId
+      JOIN UserLevels ON Users.user_level_id = UserLevels.level_id
       WHERE Users.email = ?
       `,
       [email]
@@ -95,14 +94,14 @@ const getUserByUsername = async (username: string): Promise<UserWithLevel | null
     const [rows] = await promisePool.execute(
       `
       SELECT
-        Users.userId,
+        Users.user_id,
         Users.username,
         Users.password,
         Users.email,
-        Users.createdAt,
-        UserLevels.levelName
+        Users.created_at,
+        UserLevels.level_name
       FROM Users
-      JOIN UserLevels ON Users.userLevelId = UserLevels.LevelId
+      JOIN UserLevels ON Users.user_level_id = UserLevels.level_id
       WHERE Users.username = ?
       `,
       [username]
@@ -125,10 +124,10 @@ const createUser = async (user: User): Promise<UserWithNoPassword | null> => {
   try {
     const [result] = await promisePool.execute(
       `
-      INSERT INTO Users (username, password, email, userLevelId)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO Users (username, password, email, user_level_id, user_profile_pic, user_banner_pic)
+      VALUES (?, ?, ?, ?, ?, ?)
       `,
-      [user.username, user.password, user.email, user.userLevelId] // Assuming userLevelId is part of User type
+      [user.username, user.password, user.email, 2, null, null] 
     );
 
     const header: ResultSetHeader = result as ResultSetHeader;
@@ -150,10 +149,10 @@ const modifyUser = async (user: User, id: number): Promise<UserWithNoPassword | 
     const [result] = await promisePool.execute(
       `
       UPDATE Users
-      SET username = ?, password = ?, email = ?, userLevelId = ?
-      WHERE userId = ?
+      SET ?
+      WHERE user_id = ?
       `,
-      [user.username, user.password, user.email, user.userLevelId, id] // Adjust according to User type
+      [user, id] // Adjust according to User type
     );
 
     const header: ResultSetHeader = result as ResultSetHeader;
@@ -176,29 +175,29 @@ const deleteUser = async (id: number): Promise<UserDeleteResponse | null> => {
     await connection.beginTransaction();
 
     // Execute various DELETE operations
-    await connection.execute('DELETE FROM Comments WHERE userId = ?;', [id]);
-    await connection.execute('DELETE FROM Likes WHERE userId = ?;', [id]);
-    await connection.execute('DELETE FROM Ratings WHERE userId = ?;', [id]);
+    await connection.execute('DELETE FROM Comments WHERE user_id = ?;', [id]);
+    await connection.execute('DELETE FROM Likes WHERE user_id = ?;', [id]);
+    await connection.execute('DELETE FROM Ratings WHERE user_id = ?;', [id]);
     await connection.execute(
-      'DELETE FROM Comments WHERE media_id IN (SELECT media_id FROM MediaItems WHERE userId = ?);',
+      'DELETE FROM Comments WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);',
       [id]
     );
     await connection.execute(
-      'DELETE FROM Likes WHERE media_id IN (SELECT media_id FROM MediaItems WHERE userId = ?);',
+      'DELETE FROM Likes WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);',
       [id]
     );
     await connection.execute(
-      'DELETE FROM Ratings WHERE media_id IN (SELECT media_id FROM MediaItems WHERE userId = ?);',
+      'DELETE FROM Ratings WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);',
       [id]
     );
     await connection.execute(
-      'DELETE FROM MediaItemTags WHERE media_id IN (SELECT media_id FROM MediaItems WHERE userId = ?);',
+      'DELETE FROM MediaItemTags WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);',
       [id]
     );
-    await connection.execute('DELETE FROM MediaItems WHERE userId = ?;', [id]);
+    await connection.execute('DELETE FROM MediaItems WHERE user_id = ?;', [id]);
 
     const [result] = await connection.execute(
-      'DELETE FROM Users WHERE userId = ?;',
+      'DELETE FROM Users WHERE user_id = ?;',
       [id]
     );
 
