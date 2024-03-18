@@ -30,7 +30,7 @@
         food_diary_calories INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
-    )
+    );
 
     CREATE TABLE UserWorkouts (
         user_workout_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,7 +50,7 @@
         exercise_weight INT,
         exercise_reps INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_workout_id) REFERENCES Exercises(user_workout_id)
+        FOREIGN KEY (user_workout_id) REFERENCES UserWorkouts(user_workout_id)
     );
 
     CREATE TABLE UserProgress (
