@@ -1,0 +1,13 @@
+{
+  "name": "Hybridisovellukset, upload-server",
+  "version": "1.0.0",
+  "description": "For Metropolia Courses",
+  "title": "uploadserver",
+  "url": "/api/v1",
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  },
+  "exclude": ["node_modules/", "public/"],
+  "files": ["src/**/*.ts"]
+}
