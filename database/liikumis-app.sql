@@ -30,7 +30,7 @@
         food_diary_calories INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
-    )
+    );
 
     CREATE TABLE UserWorkouts (
         user_workout_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -50,7 +50,7 @@
         exercise_weight INT,
         exercise_reps INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_workout_id) REFERENCES Exercises(user_workout_id)
+        FOREIGN KEY (user_workout_id) REFERENCES UserWorkouts(user_workout_id)
     );
 
     CREATE TABLE UserProgress (
@@ -71,6 +71,6 @@
     );
 
   INSERT INTO UserLevels (level_name) VALUES ('Admin'), ('User'), ('Guest');
-  INSERT INTO Exercises (exercises_id, workout_name ,user_exercise_weight, user_exercise_reps) VALUES (1, 'Bench Press', 100, 10), (2, 'Squat', 150, 10), (3, 'Deadlift', 200, 10), (4, 'Pull-up', 0, 10), (5, 'Push-up', 0, 10), (6, 'Sit-up', 0, 10), (7, 'Plank', 0, 10);  
+  INSERT INTO Exercises (exercise_id, exercise_name , exercise_weight, exercise_reps) VALUES (1, 'Bench Press', 100, 10), (2, 'Squat', 150, 10), (3, 'Deadlift', 200, 10), (4, 'Pull-up', 0, 10), (5, 'Push-up', 0, 10), (6, 'Sit-up', 0, 10), (7, 'Plank', 0, 10);  
 
 
