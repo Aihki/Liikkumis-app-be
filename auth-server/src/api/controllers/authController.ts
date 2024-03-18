@@ -2,9 +2,9 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { NextFunction, Request, Response } from "express";
 import CustomError from "../../classes/CustomError";
-import { LoginResponse } from "../../types/MessageTypes";
+import { LoginResponse } from "@sharedTypes/MessageTypes";
 import { getUserByUsername } from "../models/userModel";
-import { UserWithLevel, TokenContent } from "../../types/DBTypes";
+import { UserWithLevel, TokenContent } from "@sharedTypes/DBTypes";
 import { validationResult } from "express-validator";
 
 const login = async (

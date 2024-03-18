@@ -3,7 +3,7 @@
 import {NextFunction, Request, Response} from 'express';
 import CustomError from '../../classes/CustomError';
 import bcrypt from 'bcryptjs';
-import {UserDeleteResponse, UserResponse} from '../../types/MessageTypes';
+import {UserDeleteResponse, UserResponse} from '@sharedTypes/MessageTypes';
 import {
   createUser,
   deleteUser,
@@ -13,7 +13,7 @@ import {
   getUserByUsername,
   modifyUser,
 } from '../models/userModel';
-import {TokenContent, User, UserWithNoPassword} from '../../types/DBTypes';
+import {TokenContent, User, UserWithNoPassword} from '@sharedTypes/DBTypes';
 import { validationResult } from 'express-validator';
 
 const salt = bcrypt.genSaltSync(12);

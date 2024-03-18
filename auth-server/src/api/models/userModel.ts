@@ -1,7 +1,7 @@
-import {ResultSetHeader, RowDataPacket} from 'mysql2';
-import {promisePool} from '../../lib/db';
-import {UserWithLevel, User, UserWithNoPassword} from '../../types/DBTypes';
-import {UserDeleteResponse} from '../../types/MessageTypes';
+import { ResultSetHeader, RowDataPacket } from "mysql2";
+import { promisePool } from "../../lib/db";
+import { UserWithLevel, User, UserWithNoPassword } from "@sharedTypes/DBTypes";
+import { UserDeleteResponse } from "@sharedTypes/MessageTypes";
 
 const getUserById = async (id: number): Promise<UserWithNoPassword | null> => {
   try {
@@ -19,14 +19,14 @@ const getUserById = async (id: number): Promise<UserWithNoPassword | null> => {
     `,
       [id]
     );
-   
+
     if (rows.length === 0) {
       return null;
     }
-    
-    return rows[0] as UserWithNoPassword; 
+
+    return rows[0] as UserWithNoPassword;
   } catch (e) {
-    console.error('getUserById error', e instanceof Error ? e.message : '');
+    console.error("getUserById error", e instanceof Error ? e.message : "");
     throw e;
   }
 };
@@ -45,7 +45,8 @@ const getAllUsers = async (): Promise<UserWithNoPassword[] | null> => {
       JOIN UserLevels ON Users.user_level_id = UserLevels.level_id
       `
     );
-    const users: RowDataPacket[] & UserWithNoPassword[] = rows as RowDataPacket[] & UserWithNoPassword[];
+    const users: RowDataPacket[] & UserWithNoPassword[] =
+      rows as RowDataPacket[] & UserWithNoPassword[];
 
     if (users.length === 0) {
       return null;
@@ -53,7 +54,7 @@ const getAllUsers = async (): Promise<UserWithNoPassword[] | null> => {
 
     return users;
   } catch (e) {
-    console.error('getAllUsers error', (e as Error).message);
+    console.error("getAllUsers error", (e as Error).message);
     throw new Error((e as Error).message);
   }
 };
@@ -76,7 +77,8 @@ const getUserByEmail = async (email: string): Promise<UserWithLevel | null> => {
       [email]
     );
 
-    const users: RowDataPacket[] & UserWithLevel[] = rows as RowDataPacket[] & UserWithLevel[];
+    const users: RowDataPacket[] & UserWithLevel[] = rows as RowDataPacket[] &
+      UserWithLevel[];
 
     if (users.length === 0) {
       return null;
@@ -84,12 +86,14 @@ const getUserByEmail = async (email: string): Promise<UserWithLevel | null> => {
 
     return users[0];
   } catch (e) {
-    console.error('getUserByEmail error', (e as Error).message);
+    console.error("getUserByEmail error", (e as Error).message);
     throw new Error((e as Error).message);
   }
 };
 
-const getUserByUsername = async (username: string): Promise<UserWithLevel | null> => {
+const getUserByUsername = async (
+  username: string
+): Promise<UserWithLevel | null> => {
   try {
     const [rows] = await promisePool.execute(
       `
@@ -107,7 +111,8 @@ const getUserByUsername = async (username: string): Promise<UserWithLevel | null
       [username]
     );
 
-    const users: RowDataPacket[] & UserWithLevel[] = rows as RowDataPacket[] & UserWithLevel[];
+    const users: RowDataPacket[] & UserWithLevel[] = rows as RowDataPacket[] &
+      UserWithLevel[];
 
     if (users.length === 0) {
       return null;
@@ -115,7 +120,7 @@ const getUserByUsername = async (username: string): Promise<UserWithLevel | null
 
     return users[0];
   } catch (e) {
-    console.error('getUserByUsername error', (e as Error).message);
+    console.error("getUserByUsername error", (e as Error).message);
     throw new Error((e as Error).message);
   }
 };
@@ -127,7 +132,7 @@ const createUser = async (user: User): Promise<UserWithNoPassword | null> => {
       INSERT INTO Users (username, password, email, user_level_id, user_profile_pic, user_banner_pic)
       VALUES (?, ?, ?, ?, ?, ?)
       `,
-      [user.username, user.password, user.email, 2, null, null] 
+      [user.username, user.password, user.email, 2, null, null]
     );
 
     const header: ResultSetHeader = result as ResultSetHeader;
@@ -139,12 +144,15 @@ const createUser = async (user: User): Promise<UserWithNoPassword | null> => {
     const newUser = await getUserById(header.insertId);
     return newUser;
   } catch (e) {
-    console.error('createUser error', (e as Error).message);
+    console.error("createUser error", (e as Error).message);
     throw new Error((e as Error).message);
   }
 };
 
-const modifyUser = async (user: User, id: number): Promise<UserWithNoPassword | null> => {
+const modifyUser = async (
+  user: User,
+  id: number
+): Promise<UserWithNoPassword | null> => {
   try {
     const [result] = await promisePool.execute(
       `
@@ -164,7 +172,7 @@ const modifyUser = async (user: User, id: number): Promise<UserWithNoPassword | 
     const updatedUser = await getUserById(id);
     return updatedUser;
   } catch (e) {
-    console.error('modifyUser error', (e as Error).message);
+    console.error("modifyUser error", (e as Error).message);
     throw new Error((e as Error).message);
   }
 };
@@ -175,29 +183,29 @@ const deleteUser = async (id: number): Promise<UserDeleteResponse | null> => {
     await connection.beginTransaction();
 
     // Execute various DELETE operations
-    await connection.execute('DELETE FROM Comments WHERE user_id = ?;', [id]);
-    await connection.execute('DELETE FROM Likes WHERE user_id = ?;', [id]);
-    await connection.execute('DELETE FROM Ratings WHERE user_id = ?;', [id]);
+    await connection.execute("DELETE FROM Comments WHERE user_id = ?;", [id]);
+    await connection.execute("DELETE FROM Likes WHERE user_id = ?;", [id]);
+    await connection.execute("DELETE FROM Ratings WHERE user_id = ?;", [id]);
     await connection.execute(
-      'DELETE FROM Comments WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);',
+      "DELETE FROM Comments WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);",
       [id]
     );
     await connection.execute(
-      'DELETE FROM Likes WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);',
+      "DELETE FROM Likes WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);",
       [id]
     );
     await connection.execute(
-      'DELETE FROM Ratings WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);',
+      "DELETE FROM Ratings WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);",
       [id]
     );
     await connection.execute(
-      'DELETE FROM MediaItemTags WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);',
+      "DELETE FROM MediaItemTags WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);",
       [id]
     );
-    await connection.execute('DELETE FROM MediaItems WHERE user_id = ?;', [id]);
+    await connection.execute("DELETE FROM MediaItems WHERE user_id = ?;", [id]);
 
     const [result] = await connection.execute(
-      'DELETE FROM Users WHERE user_id = ?;',
+      "DELETE FROM Users WHERE user_id = ?;",
       [id]
     );
 
@@ -209,10 +217,10 @@ const deleteUser = async (id: number): Promise<UserDeleteResponse | null> => {
       return null;
     }
 
-    console.log('result', header);
-    return { message: 'User deleted', user: { userId: id } };
+    console.log("result", header);
+    return { message: "User deleted", user: { userId: id } };
   } catch (e) {
-    console.error('deleteUser error', e);
+    console.error("deleteUser error", e);
     await connection.rollback();
     throw e;
   } finally {
