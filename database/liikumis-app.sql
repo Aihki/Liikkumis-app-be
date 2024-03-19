@@ -56,6 +56,7 @@
     CREATE TABLE UserProgress (
         progress_id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
+        progress_image VARCHAR(255),
         progress_date DATE,
         progress_weight INT,
         progress_height INT,

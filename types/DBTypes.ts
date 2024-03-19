@@ -45,6 +45,7 @@ type Exercise = {
 type UserProgress = {
   progressId: number;
   userId: number;
+  progressImg: string | null;
   progressDate: Date;
   progressWeight: number;
   progressHeight: number;
