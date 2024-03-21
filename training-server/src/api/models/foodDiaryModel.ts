@@ -1,4 +1,3 @@
-import { fetch } from './../../../../auth-server/node_modules/rxjs/src/internal/umd';
 import { RowDataPacket } from "mysql2";
 import promisePool from "../../lib/db";
 import { FoodDiary } from "@sharedTypes/DBTypes";
