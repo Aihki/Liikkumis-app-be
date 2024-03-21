@@ -183,27 +183,10 @@ const deleteUser = async (id: number): Promise<UserDeleteResponse | null> => {
     await connection.beginTransaction();
 
     // Execute various DELETE operations
-    await connection.execute("DELETE FROM Comments WHERE user_id = ?;", [id]);
-    await connection.execute("DELETE FROM Likes WHERE user_id = ?;", [id]);
-    await connection.execute("DELETE FROM Ratings WHERE user_id = ?;", [id]);
-    await connection.execute(
-      "DELETE FROM Comments WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);",
-      [id]
-    );
-    await connection.execute(
-      "DELETE FROM Likes WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);",
-      [id]
-    );
-    await connection.execute(
-      "DELETE FROM Ratings WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);",
-      [id]
-    );
-    await connection.execute(
-      "DELETE FROM MediaItemTags WHERE media_id IN (SELECT media_id FROM MediaItems WHERE user_id = ?);",
-      [id]
-    );
-    await connection.execute("DELETE FROM MediaItems WHERE user_id = ?;", [id]);
-
+    await connection.execute("DELETE FROM FoodDiary WHERE user_id = ?;", [id]);
+    await connection.execute("DELETE FROM Excercises WHERE user_id = ?;", [id]);
+    await connection.execute("DELETE FROM UserWorkouts WHERE user_id = ?;", [id]);
+    await connection.execute("DELETE FROM UserProgress WHERE user_id = ?;", [id]);
     const [result] = await connection.execute(
       "DELETE FROM Users WHERE user_id = ?;",
       [id]
