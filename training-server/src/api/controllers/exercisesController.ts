@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { deleteExercise, fetchUsersExercise, fetchUsersSpecificExercise, postExercise, updateSpecificExercise } from '../models/excerciseModel';
+import { deleteExercise, fetchUsersExercise, fetchUsersSpecificExercise, postExercise, updateSpecificExercise } from '../models/exerciseModel';
 
 
 const getUsersExercise = async (req: Request, res: Response) => {

@@ -1,9 +1,9 @@
 import express, {Request, Response} from 'express';
 import foodDiaryRoute from './routes/foodDiaryRoute';
 import workoutRoute from './routes/workoutRoute';
-import excerciseRoute from './routes/excerciseRoute';
+import exerciseRoute from './routes/exerciseRoute';
 import progressRoute from './routes/progressRoute';
-import userRoute from './routes/userRoute';
+
 
 
 const router = express.Router();
@@ -15,11 +15,11 @@ router.get('/', (req: Request, res: Response) => {
 });
 
 
-router.use('/food-diaries', foodDiaryRoute);
+router.use('/fooddiary', foodDiaryRoute);
 router.use('/workouts', workoutRoute);
-router.use('/excercises', excerciseRoute);
-router.use('/progress-records', progressRoute);
-router.use('/users', userRoute);
+router.use('/exercises', exerciseRoute);
+router.use('/progress', progressRoute);
+
 
 
 export default router;

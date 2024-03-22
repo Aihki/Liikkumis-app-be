@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { deleteWorkout, fetchWorkoutByUserId, fetchWorkouts, updateWorkout } from '../models/workoutModel';
+import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkouts, updateWorkout } from '../models/workoutModel';
 
 const getWorkout = async (req: Request, res: Response) => {
     try {
@@ -26,6 +26,19 @@ const getWorkoutByUserId = async (req: Request, res: Response) => {
     }
 }
 
+const postWorkout = async (req: Request, res: Response) => {
+    try {
+        const workout = req.body;
+        const addedWorkout = await addWorkout(workout);
+        if (addedWorkout) {
+            res.status(200).json(addedWorkout);
+            return;
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+}
+
 const modifyWorkout = async (req: Request, res: Response) => {
     try {
         const {userId} = req.params;
@@ -43,8 +56,8 @@ const modifyWorkout = async (req: Request, res: Response) => {
 
 const removeWorkout = async (req: Request, res: Response) => {
     try {
-        const {userId} = req.params;
-        const removedWorkout = await deleteWorkout(parseInt(userId));
+        const {userId, workout_id} = req.params;
+        const removedWorkout = await deleteWorkout(parseInt(userId), parseInt(workout_id));
         if (removedWorkout) {
             res.status(200).json(removedWorkout);
             return;
@@ -54,4 +67,4 @@ const removeWorkout = async (req: Request, res: Response) => {
     }
 }
 
-export {getWorkout, getWorkoutByUserId, modifyWorkout, removeWorkout};
+export {getWorkout, getWorkoutByUserId, postWorkout, modifyWorkout, removeWorkout};

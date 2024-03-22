@@ -31,6 +31,21 @@ const fetchWorkoutByUserId = async (id: number) => {
     }
 };
 
+const addWorkout = async (workout: UserWorkout) => {
+    try {
+        const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
+            `INSERT INTO UserWorkouts (user_id, workout_name, workout_description) VALUES (?, ?, ?)`, [workout.userId, workout.workoutName, workout.workoutDescription]
+        );
+        if (rows.length === 0) {
+            return null
+        };
+        return rows;
+    } catch (e) {
+        throw new Error((e as Error).message)
+    }
+};
+
+
 const updateWorkout = async (id: number, name: string, description: string) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
@@ -47,10 +62,10 @@ const updateWorkout = async (id: number, name: string, description: string) => {
         
 
 
-const deleteWorkout = async (id: number) => {
+const deleteWorkout = async (id: number, workout_id: number) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
-            `DELETE FROM UserWorkouts WHERE id = ?`, [id]
+            `DELETE FROM UserWorkouts WHERE id = ? AND user_workout_id = `, [id, workout_id]
         );
         if (rows.length === 0) {
             return null
@@ -62,7 +77,7 @@ const deleteWorkout = async (id: number) => {
 }
 
 
-export { fetchWorkouts, fetchWorkoutByUserId, updateWorkout ,deleteWorkout } 
+export { fetchWorkouts, fetchWorkoutByUserId, addWorkout, updateWorkout ,deleteWorkout } 
 
 
 

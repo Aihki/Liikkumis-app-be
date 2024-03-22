@@ -1,5 +1,5 @@
 import express from 'express';
-import { getWorkout, getWorkoutByUserId, modifyWorkout, removeWorkout } from '../controllers/workoutController';
+import { getWorkout, getWorkoutByUserId, modifyWorkout, postWorkout, removeWorkout } from '../controllers/workoutController';
 
 const router = express.Router();
 
@@ -7,6 +7,8 @@ const router = express.Router();
 router.get('/' ,getWorkout);
 
 router.get('/:userId', getWorkoutByUserId);
+
+router.post('/', postWorkout);
 
 router.put('/:userId/', modifyWorkout);
 

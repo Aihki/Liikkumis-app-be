@@ -11,7 +11,7 @@ router.post('/:userId', addFoodDiary);
 
 router.put('/:userId', modifyFoodDiary);
 
-router.delete('/:userId', removeFoodDiary);
+router.delete('/:userId/:foodDiaryId', removeFoodDiary);
 
 
 
