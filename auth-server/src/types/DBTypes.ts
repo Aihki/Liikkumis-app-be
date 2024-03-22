@@ -2,9 +2,9 @@ type UserLevel = {
   levelId: number;
   levelName: string;
 };
-  
+
 type User = {
-  userId: number;
+  user_id: number;
   username: string;
   password: string;
   email: string;
@@ -13,38 +13,38 @@ type User = {
   userBannerPic: string | null;
   createdAt: Date;
 };
-  
+
 type FoodDiary = {
   foodDiaryId: number;
-  userId: number;
+  user_id: number;
   foodDiaryDate: Date;
   foodDiaryMeal: string;
   foodDiaryCalories: number;
   createdAt: Date;
 };
-  
-  type UserWorkout = {
+
+type UserWorkout = {
   userWorkoutId: number;
-  userId: number;
+  user_id: number;
   workoutDate: Date;
   workoutName: string;
   workoutDescription: string;
   createdAt: Date;
 };
-  
+
 type Exercise = {
   exerciseId: number;
-  userId: number;
+  user_id: number;
   userWorkoutId: number;
   exerciseName: string;
   exerciseWeight: number;
   exerciseReps: number;
   createdAt: Date;
 };
-  
+
 type UserProgress = {
   progressId: number;
-  userId: number;
+  user_id: number;
   progressDate: Date;
   progressWeight: number;
   progressHeight: number;
@@ -58,29 +58,27 @@ type UserProgress = {
   progressCircumferenceCalvesL: number;
 };
 
-type UserWithLevel = Omit<User, 'userLevelId'> &
-Pick<UserLevel, 'levelName'>;
+type UserWithLevel = Omit<User, "userLevelId"> & Pick<UserLevel, "levelName">;
 
-type UserWithNoPassword = Omit<UserWithLevel, 'password'>;
+type UserWithNoPassword = Omit<UserWithLevel, "password">;
 
-type TokenContent = Pick<User, 'userId'> & Pick<UserLevel, 'levelName'>;
+type TokenContent = Pick<User, "user_id"> & Pick<UserLevel, "levelName">;
 
 // for upload server
 type FileInfo = {
-    filename: string;
-    user_id: number;
+  filename: string;
+  user_id: number;
 };
 
-
 export type {
-    UserLevel,
-    User,
-    FoodDiary,
-    UserWorkout,
-    Exercise,
-    UserProgress,
-    UserWithLevel,
-    UserWithNoPassword,
-    TokenContent,
-    FileInfo
-  };
+  UserLevel,
+  User,
+  FoodDiary,
+  UserWorkout,
+  Exercise,
+  UserProgress,
+  UserWithLevel,
+  UserWithNoPassword,
+  TokenContent,
+  FileInfo,
+};

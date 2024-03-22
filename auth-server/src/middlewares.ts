@@ -38,7 +38,7 @@ const authenticate = async (
     }
 
     const token = bearer.split(' ')[1];
-
+    console.log('token', token);
     if (!token) {
       next(new CustomError('No token provided', 401));
       return;
@@ -48,8 +48,11 @@ const authenticate = async (
       token,
       process.env.JWT_SECRET as string
     ) as TokenContent;
-
-    const user = await getUserById(userFromToken.userId);
+    console.log('userFromToken', userFromToken);
+    
+    
+    const user = await getUserById(userFromToken.user_id);
+    
 
     if (!user) {
       next(new CustomError('Token not valid', 403));

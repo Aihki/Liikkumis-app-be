@@ -127,7 +127,7 @@ const userPut = async (
 
     console.log('userPut', userFromToken, user);
 
-    const result = await modifyUser(user, userFromToken.userId);
+    const result = await modifyUser(user, userFromToken.user_id);
 
     if (!result) {
       next(new CustomError('User not found', 404));
@@ -155,7 +155,7 @@ const userDelete = async (
     const userFromToken = res.locals.user;
     console.log('user from token', userFromToken);
 
-    const result = await deleteUser(userFromToken.userId);
+    const result = await deleteUser(userFromToken.user_id);
 
     if (!result) {
       next(new CustomError('User not found', 404));
@@ -185,7 +185,7 @@ const userPutAsAdmin = async (
   }
 
   try {
-    if (res.locals.user.levelName !== 'Admin') {
+    if (res.locals.user.level_name !== 'Admin') {
       next(new CustomError('You are not authorized to do this', 401));
       return;
     }
@@ -228,7 +228,7 @@ const userDeleteAsAdmin = async (
   }
 
   try {
-    if (res.locals.user.levelName !== 'Admin') {
+    if (res.locals.user.level_name !== 'Admin') {
       next(new CustomError('You are not authorized to do this', 401));
       return;
     }
@@ -253,7 +253,7 @@ const checkToken = async (
 ) => {
   const userFromToken = res.locals.user;
   // check if user exists in database
-  const user = await getUserById(userFromToken.userId);
+  const user = await getUserById(userFromToken.user_id);
   if (!user) {
     next(new CustomError('User not found', 404));
     return;

@@ -43,22 +43,24 @@ const login = async (
 
     // delete user.password before sending data back to client
     const outUser: Omit<UserWithLevel, "password"> = {
-      userId: user.userId,
+      user_id: user.user_id,
       username: user.username,
       email: user.email,
       createdAt: user.createdAt,
-      levelName: user.levelName,
+      level_name: user.level_name,
       userProfilePic: user.userProfilePic,
       userBannerPic: user.userBannerPic,
     };
 
     const tokenContent: TokenContent = {
-      userId: user.userId,
-      levelName: user.levelName,
+      user_id: user.user_id,
+      level_name: user.level_name,
     };
-
+    console.log(user)
+    console.log(user.user_id)
+    console.log(tokenContent)
     const token = jwt.sign(tokenContent, process.env.JWT_SECRET);
-
+    console.log(token)
     const message: LoginResponse = {
       message: "Login successful",
       token,

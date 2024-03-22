@@ -5,14 +5,16 @@ import { UserDeleteResponse } from "@sharedTypes/MessageTypes";
 
 const getUserById = async (id: number): Promise<UserWithNoPassword | null> => {
   try {
-    const [rows] = await promisePool.execute<RowDataPacket[]>(
+    const [rows] = await promisePool.execute<
+      RowDataPacket[] & UserWithNoPassword[]
+    >(
       `
       SELECT
-        Users.user_Id,
+        Users.user_id,
         Users.username,
         Users.email,
         Users.created_at,
-        UserLevels.level_name
+        Users.user_profile_pic
       FROM Users
       JOIN UserLevels ON Users.user_level_id = UserLevels.level_id
       WHERE Users.user_id = ?
@@ -24,12 +26,13 @@ const getUserById = async (id: number): Promise<UserWithNoPassword | null> => {
       return null;
     }
 
-    return rows[0] as UserWithNoPassword;
+    return rows[0];
   } catch (e) {
     console.error("getUserById error", e instanceof Error ? e.message : "");
     throw e;
   }
 };
+
 
 const getAllUsers = async (): Promise<UserWithNoPassword[] | null> => {
   try {
@@ -184,9 +187,14 @@ const deleteUser = async (id: number): Promise<UserDeleteResponse | null> => {
 
     // Execute various DELETE operations
     await connection.execute("DELETE FROM FoodDiary WHERE user_id = ?;", [id]);
-    await connection.execute("DELETE FROM Excercises WHERE user_id = ?;", [id]);
-    await connection.execute("DELETE FROM UserWorkouts WHERE user_id = ?;", [id]);
-    await connection.execute("DELETE FROM UserProgress WHERE user_id = ?;", [id]);
+    await connection.execute("DELETE FROM Exercises WHERE user_id = ?;", [id]);
+    await connection.execute("DELETE FROM UserWorkouts WHERE user_id = ?;", [
+      id,
+    ]);
+    await connection.execute("DELETE FROM UserProgress WHERE user_id = ?;", [
+      id,
+    ]);
+    console.log("deleteUser id", id);
     const [result] = await connection.execute(
       "DELETE FROM Users WHERE user_id = ?;",
       [id]
