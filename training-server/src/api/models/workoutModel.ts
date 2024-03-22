@@ -34,7 +34,7 @@ const fetchWorkoutByUserId = async (id: number) => {
 const addWorkout = async (workout: UserWorkout) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
-            `INSERT INTO UserWorkouts (user_id, workout_name, workout_description) VALUES (?, ?, ?)`, [workout.userId, workout.workoutName, workout.workoutDescription]
+            `INSERT INTO UserWorkouts (user_id, workout_name, workout_description) VALUES (?, ?, ?)`, [workout.user_id, workout.workout_name, workout.workout_description]
         );
         if (rows.length === 0) {
             return null
