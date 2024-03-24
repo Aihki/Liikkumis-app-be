@@ -48,8 +48,8 @@ const login = async (
       email: user.email,
       createdAt: user.createdAt,
       level_name: user.level_name,
-      userProfilePic: user.userProfilePic,
-      userBannerPic: user.userBannerPic,
+      user_profile_pic: user.user_profile_pic,
+      user_banner_pic: user.user_banner_pic,
     };
 
     const tokenContent: TokenContent = {
