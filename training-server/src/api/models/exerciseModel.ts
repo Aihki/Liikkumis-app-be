@@ -30,6 +30,21 @@ const fetchUsersSpecificExercise = async (userId:number, exerciseId:number) => {
     }
 };
 
+const fetchExercisesByWorkoutId = async (userId: number, userWorkoutId: number) => {
+    try {
+        const [rows] = await promisePool.execute<RowDataPacket[] & Exercise[]>(
+            `SELECT * FROM Exercises WHERE user_id = ? AND user_workout_id = ?`, [userId, userWorkoutId]
+        );
+        if (rows.length === 0) {
+            return [];
+        };
+        return rows;
+    } catch (e) {
+        throw new Error((e as Error).message);
+    }
+};
+
+
 const updateSpecificExercise = async (userId:number, exerciseId:number, exercise: Exercise) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & Exercise[]>(
@@ -73,7 +88,7 @@ const deleteExercise = async (userId:number, exerciseId:number) => {
 };
 
 
-export {fetchUsersExercise, fetchUsersSpecificExercise, updateSpecificExercise, postExercise, deleteExercise};
+export { fetchUsersExercise, fetchUsersSpecificExercise, fetchExercisesByWorkoutId, updateSpecificExercise, postExercise, deleteExercise };
 
 
 

@@ -33,17 +33,21 @@ const fetchWorkoutByUserId = async (id: number) => {
 
 const addWorkout = async (workout: UserWorkout) => {
     try {
+        if (workout.user_id === undefined || workout.workout_name === undefined || workout.workout_description === undefined) {
+            console.log(workout)
+            throw new Error('One or more required workout fields are undefined');
+          }
+          
         const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
-            `INSERT INTO UserWorkouts (user_id, workout_name, workout_description) VALUES (?, ?, ?)`, [workout.userId, workout.workoutName, workout.workoutDescription]
+            `INSERT INTO UserWorkouts (user_id, workout_name, workout_description) VALUES (?, ?, ?)`, 
+            [workout.user_id, workout.workout_name, workout.workout_description]
         );
-        if (rows.length === 0) {
-            return null
-        };
-        return rows;
+        // Your existing code continues
     } catch (e) {
         throw new Error((e as Error).message)
     }
 };
+
 
 
 const updateWorkout = async (id: number, name: string, description: string) => {

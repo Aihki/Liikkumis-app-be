@@ -30,10 +30,9 @@ const postWorkout = async (req: Request, res: Response) => {
     try {
         const workout = req.body;
         const addedWorkout = await addWorkout(workout);
-        if (addedWorkout) {
-            res.status(200).json(addedWorkout);
-            return;
-        }
+        res.json({ message: "Workout added successfully" });
+        return;
+        
     } catch (e) {
         res.status(500).json({error: (e as Error).message});
     }

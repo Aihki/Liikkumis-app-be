@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { deleteExercise, fetchUsersExercise, fetchUsersSpecificExercise, postExercise, updateSpecificExercise } from '../models/exerciseModel';
+import { deleteExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, postExercise, updateSpecificExercise } from '../models/exerciseModel';
 
 
 const getUsersExercise = async (req: Request, res: Response) => {
@@ -27,6 +27,19 @@ const getUsersSpecificExercise = async (req: Request, res: Response) => {
         res.status(500).json({error: (e as Error).message});
     }
 }
+
+const getExercisesByWorkoutId = async (req: Request, res: Response) => {
+    try {
+        const {userId, userWorkoutId} = req.params;
+        const exercise = await fetchExercisesByWorkoutId(parseInt(userId), parseInt(userWorkoutId));
+        if (exercise) {
+            res.status(200).json({message: "Exercises fetched successfully", data: exercise});
+            return;
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+};
 
 const modifySpecificExercise = async (req: Request, res: Response) => {
     try {
@@ -71,6 +84,7 @@ const removeExercise = async (req: Request, res: Response) => {
 export {
     getUsersExercise,
     getUsersSpecificExercise,
+    getExercisesByWorkoutId,
     modifySpecificExercise,
     addExercise,
     removeExercise

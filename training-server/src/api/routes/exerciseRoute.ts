@@ -1,12 +1,14 @@
 import express from "express";
-import { addExercise, getUsersSpecificExercise, getUsersExercise, modifySpecificExercise, removeExercise } from "../controllers/exercisesController";
+import { addExercise, getUsersSpecificExercise, getUsersExercise, modifySpecificExercise, removeExercise, getExercisesByWorkoutId } from "../controllers/exercisesController";
+import { authenticate } from "../../middlewares";
 
 const router = express.Router();
 
-router.get("/:userId", getUsersExercise);
+router.get("/:userId", authenticate, getUsersExercise);
 router.get("/:userId/:exerciseId", getUsersSpecificExercise);
+router.get("/:userId/:userWorkoutId", authenticate, getExercisesByWorkoutId);
 router.put("/:userId/:exerciseId", modifySpecificExercise);
-router.post("/", addExercise);
-router.delete("/:userId/:exerciseId", removeExercise);
+router.post("/", authenticate, addExercise);
+router.delete("/:userId/:exerciseId", authenticate, removeExercise);
 
 export default router;
