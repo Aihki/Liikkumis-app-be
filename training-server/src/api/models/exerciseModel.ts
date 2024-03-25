@@ -5,7 +5,7 @@ import { Exercise } from "@sharedTypes/DBTypes";
 const fetchUsersExercise = async (userId:number) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & Exercise[]>(
-            `SELECT * FROM Exercise where user_id = ? OR user_id IS NULL`, [userId]
+            `SELECT * FROM Exercises where user_id = ? OR user_id IS NULL`, [userId]
         );
         if (rows.length === 0) {
             return null
@@ -19,7 +19,7 @@ const fetchUsersExercise = async (userId:number) => {
 const fetchUsersSpecificExercise = async (userId:number, exerciseId:number) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & Exercise[]>(
-            `SELECT * FROM Exercise where user_id = ? and exercise_id = ?`, [userId, exerciseId]
+            `SELECT * FROM Exercises where user_id = ? and exercise_id = ?`, [userId, exerciseId]
         );
         if (rows.length === 0) {
             return null
@@ -48,7 +48,7 @@ const fetchExercisesByWorkoutId = async (userId: number, userWorkoutId: number) 
 const updateSpecificExercise = async (userId:number, exerciseId:number, exercise: Exercise) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & Exercise[]>(
-            `UPDATE Exercise SET ? WHERE user_id = ? and exercise_id = ?`, [exercise, userId, exerciseId]
+            `UPDATE Exercises SET ? WHERE user_id = ? and exercise_id = ?`, [exercise, userId, exerciseId]
         );
         if (rows.length === 0) {
             return null
@@ -62,7 +62,7 @@ const updateSpecificExercise = async (userId:number, exerciseId:number, exercise
 const postExercise = async (exercise: Exercise)=>{
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & Exercise[]>(
-            `INSERT INTO Exercise SET ?`, [exercise]
+            `INSERT INTO Exercises SET ? `, [exercise]
         );
         if (rows.length === 0) {
             return null
@@ -76,7 +76,7 @@ const postExercise = async (exercise: Exercise)=>{
 const deleteExercise = async (userId:number, exerciseId:number) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & Exercise[]>(
-            `DELETE FROM Exercise WHERE user_id = ? and exercise_id = ?`, [userId, exerciseId]
+            `DELETE FROM Exercises WHERE user_id = ? and exercise_id = ?`, [userId, exerciseId]
         );
         if (rows.length === 0) {
             return null
