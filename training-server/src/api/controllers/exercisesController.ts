@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { deleteExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, postExercise, updateSpecificExercise } from '../models/exerciseModel';
+import { deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, postExercise, updateSpecificExercise } from '../models/exerciseModel';
 
 
 const getUsersExercise = async (req: Request, res: Response) => {
@@ -14,6 +14,18 @@ const getUsersExercise = async (req: Request, res: Response) => {
         res.status(500).json({error: (e as Error).message});
     }
 }
+
+const getDefaultExercise = async (req: Request, res: Response) => {
+    try {
+        const exercise = await fetchDefaultExercise();
+        if (exercise) {
+            res.status(200).json(exercise);
+            return;
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+};
 
 const getUsersSpecificExercise = async (req: Request, res: Response) => {
     try {
@@ -83,6 +95,7 @@ const removeExercise = async (req: Request, res: Response) => {
 
 export {
     getUsersExercise,
+    getDefaultExercise,
     getUsersSpecificExercise,
     getExercisesByWorkoutId,
     modifySpecificExercise,
