@@ -8,7 +8,7 @@ router.get("/:userId", authenticate, getUsersExercise);
 router.get("/", getDefaultExercise)
 router.get("/:userId/:exerciseId", getUsersSpecificExercise);
 router.get("/:userId/:userWorkoutId",authenticate, getExercisesByWorkoutId);
-router.post("/", authenticate, addExercise);
+router.post("/:userId", authenticate, addExercise);
 router.put("/:userId/:exerciseId", modifySpecificExercise);
 router.delete("/:userId/:exerciseId", authenticate, removeExercise);
 

@@ -69,8 +69,9 @@ const modifySpecificExercise = async (req: Request, res: Response) => {
 
 const addExercise = async (req: Request, res: Response) => {
     try {
+        const userId = req.params;
         const exercise = req.body;
-        const addedExercise = await postExercise(exercise);
+        const addedExercise = await postExercise(exercise, Number(userId));
         if (addedExercise) {
             res.status(200).json(addedExercise);
             return;

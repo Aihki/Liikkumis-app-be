@@ -73,19 +73,18 @@ const updateSpecificExercise = async (userId:number, exerciseId:number, exercise
     }
 };
 
-const postExercise = async (exercise: Exercise)=>{
+const postExercise = async (exercise: Omit<Exercise, 'exercise_id' | 'created_at'>, userId: number) => {
     try {
-        const [rows] = await promisePool.execute<RowDataPacket[] & Exercise[]>(
-            `INSERT INTO Exercises SET ? `, [exercise]
+        const [rows] = await promisePool.execute<RowDataPacket[]>(
+            `INSERT INTO Exercises (user_id, user_workout_id, exercise_name, exercise_weight, exercise_reps) VALUES (?, ?, ?, ?, ?)`, 
+            [userId, exercise.user_workout_id, exercise.exercise_name, exercise.exercise_weight, exercise.exercise_reps]
         );
-        if (rows.length === 0) {
-            return null
-        };
-        return rows;
+        return rows; 
     } catch (e) {
-        throw new Error((e as Error).message)
+        throw new Error((e as Error).message);
     }
 };
+
 
 const deleteExercise = async (userId:number, exerciseId:number) => {
     try {
