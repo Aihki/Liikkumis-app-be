@@ -20,7 +20,7 @@ const fetchWorkouts = async () => {
 const fetchWorkoutByUserId = async (id: number) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
-            `SELECT * FROM UserWorkouts WHERE user_id = ?`, [id]
+            `SELECT * FROM UserWorkouts WHERE user_id = ? ORDER BY created_at DESC`, [id]
         );
         if (rows.length === 0) {
             return null
@@ -39,8 +39,8 @@ const addWorkout = async (workout: UserWorkout) => {
           }
           
         const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
-            `INSERT INTO UserWorkouts (user_id, workout_name, workout_description) VALUES (?, ?, ?)`, 
-            [workout.user_id, workout.workout_name, workout.workout_description]
+            `INSERT INTO UserWorkouts (user_id, workout_name, workout_description, workout_date) VALUES (?, ?, ?, ?)`, 
+            [workout.user_id, workout.workout_name, workout.workout_description, workout.workout_date]
         );
         // Your existing code continues
     } catch (e) {
