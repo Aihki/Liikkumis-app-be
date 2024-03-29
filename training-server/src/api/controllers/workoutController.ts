@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkouts, updateWorkout } from '../models/workoutModel';
+import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, fetchWorkouts, updateWorkout } from '../models/workoutModel';
 
 const getWorkout = async (req: Request, res: Response) => {
     try {
@@ -26,6 +26,19 @@ const getWorkoutByUserId = async (req: Request, res: Response) => {
     }
 }
 
+const getWokoutByWorkoutId = async (req: Request, res: Response) => {
+    try {
+        const {userId, workoutId} = req.params;
+        const workout = await fetchWorkoutByWorkoutId(parseInt(workoutId), parseInt(userId));
+        if (workout) {
+            res.status(200).json(workout);
+            return;
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+};
+
 const postWorkout = async (req: Request, res: Response) => {
     try {
         const workout = req.body;
@@ -39,19 +52,23 @@ const postWorkout = async (req: Request, res: Response) => {
 }
 
 const modifyWorkout = async (req: Request, res: Response) => {
+    console.log(req.body);
     try {
-        const {userId} = req.params;
-        const name = req.body.name;
-        const description = req.body.description;
-        const updatedWorkout = await updateWorkout(parseInt(userId), name, description);
+        const { workoutId } = req.params;
+        const name = req.body.workout_name;
+        const description = req.body.workout_description;
+        const workoutDate = req.body.workout_date;
+        const updatedWorkout = await updateWorkout(parseInt(workoutId), name, description, workoutDate);
         if (updatedWorkout) {
             res.status(200).json(updatedWorkout);
             return;
         }
+        res.status(404).json({ message: 'Workout not found or no changes made.' });
     } catch (e) {
         res.status(500).json({error: (e as Error).message});
     }
 }
+
 
 const removeWorkout = async (req: Request, res: Response) => {
     try {
@@ -66,4 +83,4 @@ const removeWorkout = async (req: Request, res: Response) => {
     }
 }
 
-export {getWorkout, getWorkoutByUserId, postWorkout, modifyWorkout, removeWorkout};
+export {getWorkout, getWorkoutByUserId, getWokoutByWorkoutId, postWorkout, modifyWorkout, removeWorkout};

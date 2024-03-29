@@ -1,4 +1,4 @@
-import { RowDataPacket } from "mysql2"
+import { RowDataPacket, ResultSetHeader } from "mysql2"
 import promisePool from "../../lib/db"
 import { UserWorkout } from "@sharedTypes/DBTypes"
 
@@ -31,6 +31,17 @@ const fetchWorkoutByUserId = async (id: number) => {
     }
 };
 
+const fetchWorkoutByWorkoutId = async (userId: number, workoutId: number) => {
+    try {
+        const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
+            `SELECT * FROM UserWorkouts WHERE user_workout_id = ? AND user_id = ? `, [workoutId, userId]
+        );
+        return rows[0] || null; 
+    } catch (e) {
+        throw new Error((e as Error).message);
+    }
+};
+
 const addWorkout = async (workout: UserWorkout) => {
     try {
         if (workout.user_id === undefined || workout.workout_name === undefined || workout.workout_description === undefined) {
@@ -50,38 +61,40 @@ const addWorkout = async (workout: UserWorkout) => {
 
 
 
-const updateWorkout = async (id: number, name: string, description: string) => {
+const updateWorkout = async (id: number, name: string, description: string, date: string) => {
     try {
-        const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
-            `UPDATE UserWorkouts SET workout_name = ?, workout_description = ? WHERE user_workout_id = ?`, [name, description, id]
+        const [result] = await promisePool.execute<ResultSetHeader>(
+            `UPDATE UserWorkouts SET workout_name = ?, workout_description = ?, workout_date = ? WHERE user_workout_id = ?`,
+            [name, description, date, id]
         );
-        if (rows.length === 0) {
-            return null
+        // Since it's an update operation, you won't get rows back; instead, you can check "affectedRows"
+        if (result.affectedRows === 0) {
+            return null;
         };
-        return rows;
+        return result;
     } catch (e) {
-        throw new Error((e as Error).message)
+        throw new Error((e as Error).message);
     }
 };
         
 
 
-const deleteWorkout = async (id: number, workout_id: number) => {
+const deleteWorkout = async (userId: number, workoutId: number) => {
     try {
-        const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
-            `DELETE FROM UserWorkouts WHERE id = ? AND user_workout_id = `, [id, workout_id]
+        const [result] = await promisePool.execute<ResultSetHeader>(
+            `DELETE FROM UserWorkouts WHERE user_id = ? AND user_workout_id = ?`, [userId, workoutId]
         );
-        if (rows.length === 0) {
-            return null
-        };
-        return rows;
+        if (result.affectedRows === 0) {
+            return null;
+        }
+        return result; 
     } catch (e) {
-        throw new Error((e as Error).message)
+        throw new Error((e as Error).message);
     }
-}
+};
 
 
-export { fetchWorkouts, fetchWorkoutByUserId, addWorkout, updateWorkout ,deleteWorkout } 
+export { fetchWorkouts, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, addWorkout, updateWorkout ,deleteWorkout } 
 
 
 

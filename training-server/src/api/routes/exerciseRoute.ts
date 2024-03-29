@@ -7,7 +7,7 @@ const router = express.Router();
 router.get("/:userId", authenticate, getUsersExercise);
 router.get("/", getDefaultExercise)
 router.get("/:userId/:exerciseId", getUsersSpecificExercise);
-router.get("/:userId/:userWorkoutId",authenticate, getExercisesByWorkoutId);
+router.get("/:userId/workout/:userWorkoutId", getExercisesByWorkoutId);
 router.post("/:userId", authenticate, addExercise);
 router.put("/:userId/:exerciseId", modifySpecificExercise);
 router.delete("/:userId/:exerciseId", authenticate, removeExercise);

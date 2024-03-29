@@ -45,7 +45,7 @@ const getExercisesByWorkoutId = async (req: Request, res: Response) => {
         const {userId, userWorkoutId} = req.params;
         const exercise = await fetchExercisesByWorkoutId(parseInt(userId), parseInt(userWorkoutId));
         if (exercise) {
-            res.status(200).json({message: "Exercises fetched successfully", data: exercise});
+            res.status(200).json(exercise);
             return;
         }
     } catch (e) {
@@ -68,10 +68,12 @@ const modifySpecificExercise = async (req: Request, res: Response) => {
 }
 
 const addExercise = async (req: Request, res: Response) => {
+    console.log(req.body);
+    console.log(req.params);
     try {
-        const userId = req.params;
+        const userId = Number(req.params.userId); 
         const exercise = req.body;
-        const addedExercise = await postExercise(exercise, Number(userId));
+        const addedExercise = await postExercise(exercise, userId);
         if (addedExercise) {
             res.status(200).json(addedExercise);
             return;
@@ -80,6 +82,7 @@ const addExercise = async (req: Request, res: Response) => {
         res.status(500).json({error: (e as Error).message});
     }
 }
+
 
 const removeExercise = async (req: Request, res: Response) => {
     try {
