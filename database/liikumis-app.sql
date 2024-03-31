@@ -37,7 +37,7 @@
         user_id INT,
         workout_date DATE,
         workout_name VARCHAR(50),
-        workout_description VARCHAR(255),
+        workout_description VARCHAR(200),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
     );

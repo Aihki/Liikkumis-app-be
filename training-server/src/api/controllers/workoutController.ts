@@ -72,8 +72,8 @@ const modifyWorkout = async (req: Request, res: Response) => {
 
 const removeWorkout = async (req: Request, res: Response) => {
     try {
-        const {userId, workout_id} = req.params;
-        const removedWorkout = await deleteWorkout(parseInt(userId), parseInt(workout_id));
+        const {userId, workoutId} = req.params;
+        const removedWorkout = await deleteWorkout(parseInt(userId), parseInt(workoutId));
         if (removedWorkout) {
             res.status(200).json(removedWorkout);
             return;
