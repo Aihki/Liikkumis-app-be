@@ -1,4 +1,4 @@
-import { UserWithNoPassword } from "./DBTypes";
+import { UserWithNoPassword } from "@sharedTypes/DBTypes";
 
 type MessageResponse = {
     message: string;

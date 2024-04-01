@@ -35,6 +35,7 @@
     CREATE TABLE UserWorkouts (
         user_workout_id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
+        workout_type ENUM('Gym', 'Body Weight', 'Cardio') NOT NULL,
         workout_date DATE,
         workout_name VARCHAR(50),
         workout_description VARCHAR(200),
@@ -49,6 +50,8 @@
         exercise_name VARCHAR(50),
         exercise_weight INT,
         exercise_reps INT,
+        exercise_duration INT,
+        exercise_distance VARCHAR(10),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_workout_id) REFERENCES UserWorkouts(user_workout_id)
     );
