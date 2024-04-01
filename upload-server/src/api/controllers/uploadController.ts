@@ -19,7 +19,7 @@ const uploadFile = async (
 
     const fileInfo: FileInfo = {
       filename: req.file.filename, // filename is used as random string because multer creates a random string for filename
-      user_id: res.locals.user.userId, // user_id is used to verify if user is owner of file
+      user_id: res.locals.user.user_id, // user_id is used to verify if user is owner of file
     };
 
     // use fileinfo to create jwt token to be used as filename to store the owner of the file
@@ -44,7 +44,7 @@ const uploadFile = async (
         filename,
         media_type: req.file.mimetype,
         filesize: req.file.size,
-        user_id: res.locals.user.userId,
+        user_id: res.locals.user.user_id,
       },
     };
 
@@ -69,7 +69,7 @@ const deleteFile = async (
     }
 
     // check if not admin
-    if (res.locals.user.levelName !== 'Admin') {
+    if (res.locals.user.level_name !== 'Admin') {
       // get filename without extension for jwt verification
       // filename has multiple dots, so split by dot and remove last element
       const filenameWithoutExtension = filename
@@ -90,7 +90,7 @@ const deleteFile = async (
         process.env.JWT_SECRET as string
       ) as FileInfo;
 
-      if (decodedTokenFromFileName.user_id !== res.locals.user.userId) {
+      if (decodedTokenFromFileName.user_id !== res.locals.user.user_id) {
         const err = new CustomError('user not authorized', 401);
         next(err);
         return;
