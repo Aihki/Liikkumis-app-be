@@ -50,10 +50,21 @@
         exercise_name VARCHAR(50),
         exercise_weight INT,
         exercise_reps INT,
+        exercise_sets INT,
         exercise_duration INT,
-        exercise_distance VARCHAR(10),
+        exercise_distance INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_workout_id) REFERENCES UserWorkouts(user_workout_id)
+    );
+
+    CREATE TABLE PersonalBests (
+    pb_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    exercise_name VARCHAR(50),
+    max_weight INT,
+    record_date DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
     );
 
     CREATE TABLE UserProgress (

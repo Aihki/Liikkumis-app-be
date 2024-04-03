@@ -80,7 +80,6 @@ const updateWorkout = async (
       `UPDATE UserWorkouts SET workout_name = ?, workout_description = ?, workout_date = ? WHERE user_workout_id = ?`,
       [name, description, date, id]
     );
-    // Since it's an update operation, you won't get rows back; instead, you can check "affectedRows"
     if (result.affectedRows === 0) {
       return null;
     }
@@ -91,19 +90,24 @@ const updateWorkout = async (
 };
 
 const deleteWorkout = async (userId: number, workoutId: number) => {
-  try {
-    const [result] = await promisePool.execute<ResultSetHeader>(
-      `DELETE FROM UserWorkouts WHERE user_id = ? AND user_workout_id = ?`,
-      [userId, workoutId]
-    );
-    if (result.affectedRows === 0) {
-      return null;
+    try {
+      const [deleteExercisesResult] = await promisePool.execute<ResultSetHeader>(
+        `DELETE FROM Exercises WHERE user_workout_id = ?`,
+        [workoutId]
+      );
+      const [deleteWorkoutResult] = await promisePool.execute<ResultSetHeader>(
+        `DELETE FROM UserWorkouts WHERE user_id = ? AND user_workout_id = ?`,
+        [userId, workoutId]
+      );
+      if (deleteWorkoutResult.affectedRows === 0) {
+        return null;
+      }
+      return deleteWorkoutResult;
+    } catch (e) {
+      throw new Error((e as Error).message);
     }
-    return result;
-  } catch (e) {
-    throw new Error((e as Error).message);
-  }
-};
+  };
+
 
 export {
   fetchWorkouts,

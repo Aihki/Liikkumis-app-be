@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, postExercise, updateSpecificExercise } from '../models/exerciseModel';
+import { addOrUpdatePersonalBest, deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, getPersonalBest, postExercise, updateSpecificExercise } from '../models/exerciseModel';
 
 
 const getUsersExercise = async (req: Request, res: Response) => {
@@ -97,6 +97,25 @@ const removeExercise = async (req: Request, res: Response) => {
     }
 }
 
+const getPersonalBestByExerciseName = async (req: Request, res: Response) => {
+    try {
+        const { userId, exerciseName } = req.params;
+        const personalBest = await getPersonalBest(parseInt(userId), exerciseName);
+
+        if (personalBest) {
+            res.json(personalBest);
+        } else {
+            res.status(404).json({ message: "No personal best found or updated." });
+        }
+    } catch (error) {
+        res.status(500).json({error: (error as Error).message});
+    }   
+};
+
+
+
+
+
 export {
     getUsersExercise,
     getDefaultExercise,
@@ -104,5 +123,6 @@ export {
     getExercisesByWorkoutId,
     modifySpecificExercise,
     addExercise,
-    removeExercise
+    removeExercise,
+    getPersonalBestByExerciseName
 };
