@@ -19,7 +19,15 @@ const fetchFoodDiary = async (userId: number) => {
 const postFoodDiary = async (userId: number, foodDiary: FoodDiary) => {
     try {
         const [rows] = await promisePool.execute<RowDataPacket[] & FoodDiary[]>(
-            `INSERT INTO FoodDiary SET ? WHERE user_id = ?`, [foodDiary, userId]
+            `INSERT INTO FoodDiary (user_id, food_diary_date, food_diary_notes, food_diary_ingredients, food_diary_meal, food_diary_calories) VALUES (?, ?, ?, ?, ?, ?)`, 
+[
+  userId, 
+  foodDiary.food_diary_date, 
+  foodDiary.food_diary_notes, 
+  foodDiary.food_diary_ingredients, 
+  foodDiary.food_diary_meal, 
+  foodDiary.food_diary_calories
+]
         );
         if (rows.length === 0) {
             return null

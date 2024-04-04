@@ -26,6 +26,8 @@
         food_diary_id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
         food_diary_date DATE,
+        food_diary_notes VARCHAR(255),
+        food_diary_ingrediants VARCHAR(255),
         food_diary_meal VARCHAR(255),
         food_diary_calories INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
