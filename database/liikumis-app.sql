@@ -38,6 +38,7 @@
         user_workout_id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
         workout_type ENUM('Gym', 'Body Weight', 'Cardio') NOT NULL,
+        workout_status ENUM('completed', 'pending') NOT NULL DEFAULT 'pending',
         workout_date DATE,
         workout_name VARCHAR(50),
         workout_description VARCHAR(200),

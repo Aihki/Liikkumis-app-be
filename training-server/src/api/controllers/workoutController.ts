@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, fetchWorkouts, updateWorkout } from '../models/workoutModel';
+import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, fetchWorkouts, getWorkoutWhitStatusCompleted, setWorkoutStatusCompleted, updateWorkout } from '../models/workoutModel';
 
 const getWorkout = async (req: Request, res: Response) => {
     try {
@@ -26,7 +26,7 @@ const getWorkoutByUserId = async (req: Request, res: Response) => {
     }
 }
 
-const getWokoutByWorkoutId = async (req: Request, res: Response) => {
+const getWorkoutByWorkoutId = async (req: Request, res: Response) => {
     try {
         const {userId, workoutId} = req.params;
         const workout = await fetchWorkoutByWorkoutId(parseInt(workoutId), parseInt(userId));
@@ -83,4 +83,41 @@ const removeWorkout = async (req: Request, res: Response) => {
     }
 }
 
-export {getWorkout, getWorkoutByUserId, getWokoutByWorkoutId, postWorkout, modifyWorkout, removeWorkout};
+const setWorkoutStatusToCompleted = async (req: Request, res: Response) => {
+    try {
+        const { workoutId } = req.params;
+        const updatedWorkout = await setWorkoutStatusCompleted(parseInt(workoutId));
+        if (updatedWorkout) {
+            res.status(200).json(updatedWorkout);
+            return;
+        }
+        res.status(404).json({ message: 'Workout not found' });
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+};
+
+const getCompletedWorkouts = async (req: Request, res: Response) => {
+    
+    try {
+        const { userId } = req.params;
+        const workout = await getWorkoutWhitStatusCompleted(parseInt(userId));
+        if (workout) {
+            res.status(200).json(workout);
+            return;
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+};
+
+export {
+    getWorkout, 
+    getWorkoutByUserId, 
+    getWorkoutByWorkoutId, 
+    postWorkout, 
+    modifyWorkout, 
+    removeWorkout, 
+    setWorkoutStatusToCompleted, 
+    getCompletedWorkouts
+    };
