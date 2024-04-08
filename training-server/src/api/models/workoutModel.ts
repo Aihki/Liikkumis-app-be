@@ -127,8 +127,23 @@ const deleteWorkout = async (userId: number, workoutId: number) => {
   const getWorkoutWhitStatusCompleted = async (userId: number) => {
     try {
       const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
-        `SELECT * FROM UserWorkouts WHERE user_id = ? AND workout_status = 'completed'`,
+        `SELECT * FROM UserWorkouts WHERE user_id = ? AND workout_status = 'completed' ORDER BY created_at DESC`,
         [userId]
+      );
+      if (rows.length === 0) {
+        return null;
+      }
+      return rows;
+    } catch (e) {
+      throw new Error((e as Error).message);
+    }
+  };
+
+  const getWorkoutStatusCompleted = async (userId: number, workoutId: number)  => {
+    try {
+      const [rows] = await promisePool.execute<RowDataPacket[] & UserWorkout[]>(
+        `SELECT * FROM UserWorkouts WHERE user_id = ? AND user_workout_id = ? AND workout_status = 'completed'`,
+        [userId, workoutId]
       );
       if (rows.length === 0) {
         return null;
@@ -148,5 +163,6 @@ export {
   updateWorkout,
   deleteWorkout,
   setWorkoutStatusCompleted,
-  getWorkoutWhitStatusCompleted
+  getWorkoutWhitStatusCompleted,
+  getWorkoutStatusCompleted
 };

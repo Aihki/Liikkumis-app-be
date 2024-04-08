@@ -4,6 +4,7 @@ import {
   getWorkout,
   getWorkoutByUserId,
   getWorkoutByWorkoutId,
+  getWorkoutStatus,
   modifyWorkout,
   postWorkout,
   removeWorkout,
@@ -18,6 +19,8 @@ router.get("/", getWorkout);
 router.get("/:userId", getWorkoutByUserId);
 
 router.get("/completed/:userId", getCompletedWorkouts);
+
+router.get("/status/:userId/:workoutId", getWorkoutStatus);
 
 router.get("/:userId/:workoutId", getWorkoutByWorkoutId);
 

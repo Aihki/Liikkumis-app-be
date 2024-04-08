@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, fetchWorkouts, getWorkoutWhitStatusCompleted, setWorkoutStatusCompleted, updateWorkout } from '../models/workoutModel';
+import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, fetchWorkouts, getWorkoutStatusCompleted, getWorkoutWhitStatusCompleted, setWorkoutStatusCompleted, updateWorkout } from '../models/workoutModel';
 
 const getWorkout = async (req: Request, res: Response) => {
     try {
@@ -111,6 +111,21 @@ const getCompletedWorkouts = async (req: Request, res: Response) => {
     }
 };
 
+
+const getWorkoutStatus = async (req: Request, res: Response) => {
+    const { userId, workoutId } = req.params;
+    try {
+        const workout = await getWorkoutStatusCompleted(parseInt(userId), parseInt(workoutId));
+        if (workout === null || workout.length === 0) {
+            res.json({workoutCompleted: false});
+        } else {
+            res.json({workoutCompleted: true});
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+};
+
 export {
     getWorkout, 
     getWorkoutByUserId, 
@@ -119,5 +134,6 @@ export {
     modifyWorkout, 
     removeWorkout, 
     setWorkoutStatusToCompleted, 
-    getCompletedWorkouts
+    getCompletedWorkouts,
+    getWorkoutStatus
     };
