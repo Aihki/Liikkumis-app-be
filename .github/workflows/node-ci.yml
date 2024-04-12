@@ -1,26 +1,65 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: Full Stack Build
 
 on:
   push:
-    branches: [ "training-server" ]
+    branches: [ "main", "training-server" ]
   pull_request:
-    branches: [ "training-server" ]
+    branches: [ "main", "training-server" ]
 
 jobs:
-  unittest:
-
+  build-auth-server:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js 20.x
-      uses: actions/setup-node@v4
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js for Auth Server
+      uses: actions/setup-node@v2
       with:
-        node-version: '20.x'
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    
+        node-version: '14'
+
+    - name: Install dependencies for Auth Server
+      run: npm ci
+      working-directory: ./auth-server
+
+    - name: Build Auth Server
+      run: npm run build --if-present
+      working-directory: ./auth-server
+
+  build-training-server:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js for Training Server
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies for Training Server
+      run: npm ci
+      working-directory: ./training-server
+
+    - name: Build Training Server
+      run: npm run build --if-present
+      working-directory: ./training-server
+
+  build-upload-server:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Node.js for Upload Server
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies for Upload Server
+      run: npm ci
+      working-directory: ./upload-server
+
+    - name: Build Upload Server
+      run: npm run build --if-present
+      working-directory: ./upload-server
