@@ -16,10 +16,10 @@ jobs:
     - name: Set up Node.js for Auth Server
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '20'
 
     - name: Install dependencies for Auth Server
-      run: npm ci
+      run: npm i
       working-directory: ./auth-server
 
     - name: Build Auth Server
@@ -35,10 +35,10 @@ jobs:
     - name: Set up Node.js for Training Server
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '20'
 
     - name: Install dependencies for Training Server
-      run: npm ci
+      run: npm i
       working-directory: ./training-server
 
     - name: Build Training Server
@@ -54,10 +54,10 @@ jobs:
     - name: Set up Node.js for Upload Server
       uses: actions/setup-node@v2
       with:
-        node-version: '14'
+        node-version: '20'
 
     - name: Install dependencies for Upload Server
-      run: npm ci
+      run: npm i
       working-directory: ./upload-server
 
     - name: Build Upload Server
