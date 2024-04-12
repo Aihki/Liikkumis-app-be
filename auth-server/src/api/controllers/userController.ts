@@ -228,7 +228,10 @@ const userDeleteAsAdmin = async (
   }
 
   try {
-    if (res.locals.user.level_name !== 'Admin') {
+    console.log('User from res.locals:', res.locals.user);
+
+    // Check if the user's level_id is not 1 (Admin)
+    if (res.locals.user.level_name !== "Admin") {
       next(new CustomError('You are not authorized to do this', 401));
       return;
     }

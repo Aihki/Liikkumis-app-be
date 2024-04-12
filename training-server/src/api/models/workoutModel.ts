@@ -154,6 +154,33 @@ const deleteWorkout = async (userId: number, workoutId: number) => {
     }
   };
 
+  const getCompletedWorkoutCount = async () => {
+    try {
+        const [rows] = await promisePool.execute(
+            `SELECT COUNT(*) FROM UserWorkouts WHERE workout_status = 'completed'`
+        );
+        return (rows as RowDataPacket[])[0]['COUNT(*)'];
+        
+        } catch (e) {
+        throw new Error((e as Error).message);
+    }
+};
+
+const getMPopularWorkoutType = async () => {
+  try {
+    const [rows] = await promisePool.execute(`
+      SELECT workout_type, COUNT(*) AS count
+      FROM UserWorkouts
+      GROUP BY workout_type
+      ORDER BY count DESC
+      LIMIT 1
+    `);
+    return rows;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+};
+
 
 export {
   fetchWorkouts,
@@ -164,5 +191,7 @@ export {
   deleteWorkout,
   setWorkoutStatusCompleted,
   getWorkoutWhitStatusCompleted,
-  getWorkoutStatusCompleted
+  getWorkoutStatusCompleted,
+  getCompletedWorkoutCount,
+  getMPopularWorkoutType
 };

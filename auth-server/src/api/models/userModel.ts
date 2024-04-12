@@ -14,7 +14,8 @@ const getUserById = async (id: number): Promise<UserWithNoPassword | null> => {
         Users.username,
         Users.email,
         Users.created_at,
-        Users.user_profile_pic
+        Users.user_profile_pic,
+        Users.user_level_id
       FROM Users
       JOIN UserLevels ON Users.user_level_id = UserLevels.level_id
       WHERE Users.user_id = ?

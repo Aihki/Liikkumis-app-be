@@ -27,7 +27,7 @@
         user_id INT,
         food_diary_date DATE,
         food_diary_notes VARCHAR(255),
-        food_diary_ingrediants VARCHAR(255),
+        food_diary_ingredients VARCHAR(255),
         food_diary_meal VARCHAR(255),
         food_diary_calories INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

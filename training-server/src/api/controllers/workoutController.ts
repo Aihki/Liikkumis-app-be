@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, fetchWorkouts, getWorkoutStatusCompleted, getWorkoutWhitStatusCompleted, setWorkoutStatusCompleted, updateWorkout } from '../models/workoutModel';
+import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, fetchWorkouts, getCompletedWorkoutCount, getMPopularWorkoutType, getWorkoutStatusCompleted, getWorkoutWhitStatusCompleted, setWorkoutStatusCompleted, updateWorkout } from '../models/workoutModel';
 
 const getWorkout = async (req: Request, res: Response) => {
     try {
@@ -126,6 +126,27 @@ const getWorkoutStatus = async (req: Request, res: Response) => {
     }
 };
 
+const getCountOfCompletedWorkouts = async (req: Request, res: Response) => {
+    try {
+        const count = await getCompletedWorkoutCount();
+        res.status(200).json({count});
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+};
+
+const getMostPopularWorkoutType = async (req: Request, res: Response) => {
+    try {
+        const workout = await getMPopularWorkoutType();
+        if (workout) {
+            res.status(200).json(workout);
+            return;
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+};
+
 export {
     getWorkout, 
     getWorkoutByUserId, 
@@ -135,5 +156,7 @@ export {
     removeWorkout, 
     setWorkoutStatusToCompleted, 
     getCompletedWorkouts,
-    getWorkoutStatus
+    getWorkoutStatus,
+    getCountOfCompletedWorkouts,
+    getMostPopularWorkoutType
     };

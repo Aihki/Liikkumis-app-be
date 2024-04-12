@@ -1,6 +1,8 @@
 import express from "express";
 import {
   getCompletedWorkouts,
+  getCountOfCompletedWorkouts,
+  getMostPopularWorkoutType,
   getWorkout,
   getWorkoutByUserId,
   getWorkoutByWorkoutId,
@@ -16,7 +18,11 @@ const router = express.Router();
 
 router.get("/", getWorkout);
 
+router.get("/completed/count", getCountOfCompletedWorkouts);
+
 router.get("/:userId", getWorkoutByUserId);
+
+router.get("/popular/type", getMostPopularWorkoutType);
 
 router.get("/completed/:userId", getCompletedWorkouts);
 
