@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { fetchProgress, postProgress, updateProgress } from '../models/progressModel';
+import { fetchNewstProgress, fetchProgress, fetchProgressByDate, postProgress, updateProgress } from '../models/progressModel';
 
 const getProgress = async (req: Request, res: Response) => {
     try {
@@ -16,8 +16,10 @@ const getProgress = async (req: Request, res: Response) => {
 
 const addProgress = async (req: Request, res: Response) => {
     try {
+        const userId = Number(req.params.userId); 
         const progress = req.body;
-        const addedProgress = await postProgress(progress);
+        console.log('progress', progress)
+        const addedProgress = await postProgress(progress, userId);
         if (addedProgress) {
             res.status(200).json(addedProgress);
             return;
@@ -40,5 +42,34 @@ const modifyProgress = async (req: Request, res: Response) => {
         res.status(500).json({error: (e as Error).message});
     }
 }
+const getNewstProgress = async (req: Request, res: Response) => {
+    try {
+        const {userId} = req.params;
+        const progress = await fetchNewstProgress(parseInt(userId));
+        if (progress) {
+            res.status(200).json(progress);
+            return;
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+}
 
-export {getProgress, addProgress, modifyProgress};
+const getProgressByDate = async (req: Request, res: Response) => {
+    try {
+        const {userId, date} = req.params;
+
+        // Convert date to YYYY-MM-DD format
+        const formattedDate = `${date.slice(0, 4)}-${date.slice(4, 6)}-${date.slice(6, 8)}`;
+
+        const progress = await fetchProgressByDate(parseInt(userId), formattedDate);
+        if (progress) {
+            res.status(200).json(progress);
+            return;
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+}
+
+export {getProgress, addProgress, modifyProgress, getNewstProgress, getProgressByDate};

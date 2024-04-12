@@ -60,14 +60,14 @@
         progress_date DATE,
         progress_weight INT,
         progress_height INT,
-        progres_circumference_chest INT,
+        progress_circumference_chest INT,
         progress_circumference_waist INT,
         progress_circumference_thigh_r INT,
         progress_circumference_thigh_l INT,
         progress_circumference_bicep_r INT,
         progress_circumference_bicep_l INT,
-        progres_circumference_calves_r INT,
-        progres_circumference_calves_l INT,
+        progress_circumference_calves_r INT,
+        progress_circumference_calves_l INT,
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
     );
 

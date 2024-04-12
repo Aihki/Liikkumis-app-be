@@ -106,6 +106,7 @@ const getUserByUsername = async (
         Users.password,
         Users.email,
         Users.created_at,
+        Users.user_profile_pic,
         UserLevels.level_name
       FROM Users
       JOIN UserLevels ON Users.user_level_id = UserLevels.level_id
