@@ -18,37 +18,34 @@ const uploadFile = async (
     }
 
     const fileInfo: FileInfo = {
-      filename: req.file.filename, // filename is used as random string because multer creates a random string for filename
-      user_id: res.locals.user.user_id, // user_id is used to verify if user is owner of file
+      user_profile_pic: req.file.filename,
+      user_id: res.locals.user.user_id,
     };
 
-    // use fileinfo to create jwt token to be used as filename to store the owner of the file
     const filename = `${jwt.sign(
       fileInfo,
       process.env.JWT_SECRET as string
     )}.${req.file.originalname.split('.').pop()}`;
 
-    // change file name of req.file.path to filename
+
     fs.renameSync(req.file.path, `${req.file.destination}/${filename}`);
-    // if thumbnail exists, change thumbnail name of req.file.path + '_thumb' to filename + '_thumb'
+
     if (fs.existsSync(`${req.file.path}-thumb.png`)) {
       fs.renameSync(
         `${req.file.path}-thumb.png`,
         `${req.file.destination}/${filename}-thumb.png`
       );
     }
-
+    console.log('filename', filename);
     const response = {
       message: 'file uploaded',
       data: {
-        filename,
-        media_type: req.file.mimetype,
-        filesize: req.file.size,
+        user_profile_pic: filename,
         user_id: res.locals.user.user_id,
       },
     };
+    console.log('response', response);
 
-    console.log('Data before sending to GraphQL hooks:', response.data);
     res.json(response);
   } catch (error) {
     next(new CustomError((error as Error).message, 400));
