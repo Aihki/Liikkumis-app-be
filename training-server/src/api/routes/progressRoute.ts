@@ -1,13 +1,15 @@
 import express from 'express';
-import { addProgress, getProgress, modifyProgress } from '../controllers/progressController';
+import { addProgress, getNewstProgress, getProgressByDate, modifyProgress } from '../controllers/progressController';
 
 const router = express.Router();
 
-router.get('/:userId', getProgress);
+router.get('/:userId', getNewstProgress);
 
-router.post('/', addProgress);
+router.post('/:userId', addProgress);
 
 router.put('/:userId', modifyProgress);
+
+router.get('/:userId/:date', getProgressByDate);
 
 
 

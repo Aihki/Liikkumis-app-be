@@ -41,12 +41,13 @@ const authenticate = async (
     }
 
     const token = authHeader.split(' ')[1];
+
     const decodedToken = jwt.verify(
       token,
       process.env.JWT_SECRET as string
     ) as TokenContent;
 
-    console.log(decodedToken);
+
     if (!decodedToken) {
       next(new CustomError('Authentication failed', 401));
       return;
@@ -71,6 +72,7 @@ const makeThumbnail = async (
     }
 
     const src = path.join(__dirname, '..', 'uploads', req.file.filename);
+    console.log('src')
     console.log(src);
 
     if (!req.file.mimetype.includes('video')) {

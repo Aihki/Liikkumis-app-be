@@ -1,15 +1,33 @@
 import {Request, Response} from 'express';
-import { getUserCount, getUsers } from "../models/userModel";
+import {fetchProfilePic, postProfilePic, getUsers, getUserCount} from '../models/userModel'
+
+const getProfilePic = async (req: Request, res: Response) => {
+    try {
+        const {pic} = req.params;
+        const user = await fetchProfilePic(pic);
+        res.status(200).json({user});
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+}
+
+const updateProfilePic = async (req: Request, res: Response) => {
+    try {
+        const {userId} = req.params;
+        const picture = req.body.picture;
+        await postProfilePic(parseInt(userId), picture);
+        res.status(200).json({message: "Profile picture updated successfully"});
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+};
 
 const getAllUsers = async (req: Request, res: Response) => {
     try {
         const users = await getUsers();
-        if (users) {
-            res.status(200).json(users);
-            return;
-        }
-    } catch (e) {
-        res.status(500).json({error: (e as Error).message});
+        res.status(200).json(users);
+    } catch (error) {
+        
     }
 };
 
@@ -25,5 +43,8 @@ const getCountOfUsers = async (req: Request, res: Response) => {
 
 export {
     getAllUsers,
-    getCountOfUsers
+    getCountOfUsers,
+    getProfilePic,
+    updateProfilePic
+    
 }

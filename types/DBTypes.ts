@@ -82,8 +82,8 @@ type TokenContent = Pick<User, "user_id"> & Pick<UserLevel, "level_name">;
 
 // for upload server
 type FileInfo = {
-  filename: string;
-  user_id: number;
+    user_profile_pic: string;
+    user_id: number;
 };
 
 export type {
