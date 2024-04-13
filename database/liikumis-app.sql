@@ -70,6 +70,51 @@
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
     );
 
+    -- Create Challenges Table
+    CREATE TABLE Challenges (
+        challenge_id INT AUTO_INCREMENT PRIMARY KEY,
+        challenge_name VARCHAR(255) NOT NULL,
+        description TEXT,
+        start_date DATE,
+        end_date DATE,
+        target_type ENUM('Distance', 'Weight', 'Time', 'Repetition') NOT NULL,
+        target_value DECIMAL(10,2) NOT NULL,
+        active BOOLEAN DEFAULT TRUE
+    );
+
+    -- Create User Challenges Table
+    CREATE TABLE UserChallenges (
+        user_challenge_id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
+        challenge_id INT,
+        start_date DATE DEFAULT CURRENT_DATE,
+        progress DECIMAL(10,2) DEFAULT 0,
+        completed BOOLEAN DEFAULT FALSE,
+        completion_date DATE,
+        FOREIGN KEY (user_id) REFERENCES Users(user_id),
+        FOREIGN KEY (challenge_id) REFERENCES Challenges(challenge_id)
+    );
+
+    -- Create Achievements Table
+    CREATE TABLE Achievements (
+        achievement_id INT AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        criterion ENUM('CompleteChallenge', 'ReachTarget') NOT NULL,
+        criterion_detail VARCHAR(255) NOT NULL
+    );
+
+    -- Create User Achievements Table
+    CREATE TABLE UserAchievements (
+        user_achievement_id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
+        achievement_id INT,
+        achieved_on DATE DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES Users(user_id),
+        FOREIGN KEY (achievement_id) REFERENCES Achievements(achievement_id)
+    );
+
+
     CREATE TABLE UserProgress (
         progress_id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,

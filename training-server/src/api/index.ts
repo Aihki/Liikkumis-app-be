@@ -4,7 +4,7 @@ import workoutRoute from './routes/workoutRoute';
 import exerciseRoute from './routes/exerciseRoute';
 import progressRoute from './routes/progressRoute';
 import userRoute from './routes/userRoute';
-
+import challengeRoute from './routes/challengeRoute';
 
 const router = express.Router();
 
@@ -20,6 +20,7 @@ router.use('/workouts', workoutRoute);
 router.use('/exercises', exerciseRoute);
 router.use('/progress', progressRoute);
 router.use('/users', userRoute);
+router.use('/challenge', challengeRoute);
 
 
 

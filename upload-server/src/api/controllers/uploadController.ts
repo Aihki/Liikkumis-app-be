@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import {FileInfo, TokenContent} from '@sharedTypes/DBTypes';
 import {MessageResponse} from '@sharedTypes/MessageTypes';
+import { log } from 'console';
 
 const uploadFile = async (
   req: Request,
@@ -86,7 +87,8 @@ const deleteFile = async (
         filenameWithoutExtension,
         process.env.JWT_SECRET as string
       ) as FileInfo;
-
+      console.log(decodedTokenFromFileName);
+      console.log(res.locals.user.user_id);
       if (decodedTokenFromFileName.user_id !== res.locals.user.user_id) {
         const err = new CustomError('user not authorized', 401);
         next(err);
