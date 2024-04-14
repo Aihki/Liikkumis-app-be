@@ -70,7 +70,6 @@
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
     );
 
-    -- Create Challenges Table
     CREATE TABLE Challenges (
         challenge_id INT AUTO_INCREMENT PRIMARY KEY,
         challenge_name VARCHAR(255) NOT NULL,
@@ -82,7 +81,6 @@
         active BOOLEAN DEFAULT TRUE
     );
 
-    -- Create User Challenges Table
     CREATE TABLE UserChallenges (
         user_challenge_id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
@@ -95,7 +93,6 @@
         FOREIGN KEY (challenge_id) REFERENCES Challenges(challenge_id)
     );
 
-    -- Create Achievements Table
     CREATE TABLE Achievements (
         achievement_id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
@@ -104,7 +101,6 @@
         criterion_detail VARCHAR(255) NOT NULL
     );
 
-    -- Create User Achievements Table
     CREATE TABLE UserAchievements (
         user_achievement_id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
@@ -133,7 +129,19 @@
         FOREIGN KEY (user_id) REFERENCES Users(user_id)
     );
 
-  INSERT INTO UserLevels (level_name) VALUES ('Admin'), ('User'), ('Guest');
-  INSERT INTO Exercises (exercise_id, exercise_name , exercise_weight, exercise_reps) VALUES (1, 'Bench Press', 100, 10), (2, 'Squat', 150, 10), (3, 'Deadlift', 200, 10), (4, 'Pull-up', 0, 10), (5, 'Push-up', 0, 10), (6, 'Sit-up', 0, 10), (7, 'Plank', 0, 10);  
+    INSERT INTO Challenges 
+    (challenge_name, description, start_date, end_date, target_type, target_value, active) 
+    VALUES
+    ('30-Day Running Challenge', 'Complete 50 kilometers of running within 30 days to improve stamina and overall health.', '2024-01-01', '2024-01-31', 'Distance', 50.00, TRUE),
+    ('10-Day Running Challenge', 'Complete 20 kilometers of running within 10 days to boost your quick sprint capabilities.', '2024-01-01', '2024-01-11', 'Distance', 20.00, TRUE);
+
+    INSERT INTO Achievements (title, description, criterion, criterion_detail) VALUES
+    ('10-Day Running Conqueror', 'Awarded for completing the 10-Day Running Challenge.', 'CompleteChallenge', '10-Day Running Challenge');
+
+    INSERT INTO Achievements (title, description, criterion, criterion_detail) 
+    VALUES ('30-Day Running Conqueror', 'Awarded for completing the 30-Day Running Challenge.', 'CompleteChallenge', '30-Day Running Challenge');
+
+    INSERT INTO UserLevels (level_name) VALUES ('Admin'), ('User'), ('Guest');
+    INSERT INTO Exercises (exercise_id, exercise_name , exercise_weight, exercise_reps) VALUES (1, 'Bench Press', 100, 10), (2, 'Squat', 150, 10), (3, 'Deadlift', 200, 10), (4, 'Pull-up', 0, 10), (5, 'Push-up', 0, 10), (6, 'Sit-up', 0, 10), (7, 'Plank', 0, 10);  
 
 

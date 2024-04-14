@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { deleteChallenge, fetchChallengeById, fetchChallenges, fetchUserChallenges, hasUserJoinedChallenge, joinChallenge, leaveChallenge, patchChallenge, postChallenge } from '../models/challengeModel';
+import { deleteChallenge, fetchChallengeById, fetchChallenges, fetchUserChallenges, hasUserJoinedChallenge, joinChallenge, leaveChallenge, patchChallenge, postChallenge, updateChallengeProgress } from '../models/challengeModel';
 import { log } from 'console';
 
 
@@ -130,6 +130,32 @@ const checkHasUserJoinedChallenge = async (req: Request, res: Response) => {
     }
 };
 
+const updateUserChallengeProgress = async (req: Request, res: Response) => {
+    try {
+        const { challengeId, userId } = req.params;
+        const { progress } = req.body;
+
+        const userIdNum = parseInt(userId);
+        const challengeIdNum = parseInt(challengeId);
+        const progressNum = parseFloat(progress);
+
+        if (isNaN(userIdNum) || isNaN(challengeIdNum) || isNaN(progressNum)) {
+            return res.status(400).json({ message: 'Invalid input data' });
+        }
+
+        const updated = await updateChallengeProgress(userIdNum, challengeIdNum, progressNum);
+
+        if (updated) {
+            return res.status(200).json({ success: true, message: 'Challenge progress updated successfully' });
+        } else {
+            return res.status(404).json({ success: false, message: 'No updates made. Check if challenge exists and is not completed.' });
+        }
+    } catch (e) {
+        console.error("Failed to update challenge progress:", e);
+        res.status(500).json({ success: false, error: (e as Error).message });
+    }
+};
+
 
 export {
     joinChallengeWithUserId,
@@ -140,6 +166,7 @@ export {
     getChallenges,
     updateChallenge,
     leaveChallengeWithUserId,
-    checkHasUserJoinedChallenge
+    checkHasUserJoinedChallenge,
+    updateUserChallengeProgress
 
 }

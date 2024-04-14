@@ -1,6 +1,7 @@
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 import promisePool from "../../lib/db";
-import { Challenge } from "@sharedTypes/DBTypes";
+import { Achievement, Challenge } from "@sharedTypes/DBTypes";
+import { log } from "console";
 
 
 /**
@@ -40,16 +41,33 @@ const fetchChallengeById = async (challengeId: number) => {
 };
 
 /**
- * Fetches all challenges that a user is participating in.
+ * Fetches all challenges that a user is participating in, including challenge details from the Challenges table.
  * @param {number} userId - The ID of the user to fetch challenges for.
- * @returns {Promise<RowDataPacket[]>} - A promise that resolves to an array of challenges.
+ * @returns {Promise<RowDataPacket[]>} - A promise that resolves to an array of challenges along with challenge details.
  */
 const fetchUserChallenges = async (userId: number) => {
     try {
-        const [rows] = await promisePool.execute<RowDataPacket[]>(
-            `SELECT * FROM UserChallenges WHERE user_id = ?`,
-            [userId]
-        );
+        const query = `
+            SELECT 
+                uc.user_challenge_id,
+                uc.challenge_id,
+                uc.user_id,
+                uc.start_date,
+                uc.completion_date,
+                uc.progress,
+                uc.completed,
+                c.challenge_name,
+                c.description,
+                c.start_date AS challenge_start_date,
+                c.end_date AS challenge_end_date,
+                c.target_type,
+                c.target_value,
+                c.active
+            FROM UserChallenges uc
+            JOIN Challenges c ON uc.challenge_id = c.challenge_id
+            WHERE uc.user_id = ?
+        `;
+        const [rows] = await promisePool.execute<RowDataPacket[]>(query, [userId]);
         return rows;
     } catch (e) {
         throw new Error((e as Error).message);
@@ -214,6 +232,12 @@ const leaveChallenge = async (userId: number, challengeId: number): Promise<bool
     }
 };
 
+/**
+ * Checks if a user has joined a challenge.
+ * @param {number} userId - The ID of the user to check.
+ * @param {number} challengeId - The ID of the challenge to check.
+ * @returns {Promise<boolean>} - True if the user has joined the challenge, otherwise false.
+ */
 const hasUserJoinedChallenge = async (userId: number, challengeId: number): Promise<boolean> => {
     try {
         const [rows] = await promisePool.query<RowDataPacket[]>(
@@ -231,6 +255,63 @@ const hasUserJoinedChallenge = async (userId: number, challengeId: number): Prom
     }
 };
 
+
+
+
+/**
+ * Updates the progress of a user in a challenge and checks for completion to potentially award achievements.
+ * @param userId The ID of the user to update.
+ * @param challengeId The ID of the challenge to update.
+ * @param newProgress The new progress value to add to the existing progress.
+ * @returns True if the operation was successful, otherwise throws an error.
+ */
+const updateChallengeProgress = async (userId: number, challengeId: number, newProgress: number): Promise<boolean> => {
+    try {
+        const updateProgressQuery = `
+            UPDATE UserChallenges
+            SET progress = progress + ?
+            WHERE user_id = ? AND challenge_id = ? AND completed = FALSE;
+        `;
+        const [progressResult] = await promisePool.execute<ResultSetHeader>(updateProgressQuery, [newProgress, userId, challengeId]);
+
+        if (progressResult.affectedRows > 0) {
+            const completionCheckQuery = `
+                UPDATE UserChallenges
+                SET completed = TRUE, completion_date = CURDATE()
+                WHERE user_id = ? AND challenge_id = ? AND progress >= (
+                    SELECT target_value FROM Challenges WHERE challenge_id = ?
+                );
+            `;
+            await promisePool.execute<ResultSetHeader>(completionCheckQuery, [userId, challengeId, challengeId]);
+
+            const achievementCheckQuery = `
+                SELECT a.achievement_id 
+                FROM Achievements a
+                JOIN Challenges c ON c.challenge_name = a.criterion_detail
+                JOIN UserChallenges uc ON uc.challenge_id = c.challenge_id AND uc.user_id = ? AND uc.completed = TRUE
+                WHERE a.criterion = 'CompleteChallenge' AND c.challenge_id = ?;
+            `;
+            const [achievements] = await promisePool.query<RowDataPacket[]>(achievementCheckQuery, [userId, challengeId]);
+
+            achievements.forEach(async (achievementRow: RowDataPacket) => {
+                const insertAchievementQuery = `
+                    INSERT INTO UserAchievements (user_id, achievement_id, achieved_on)
+                    VALUES (?, ?, NOW());
+                `;
+                await promisePool.execute<ResultSetHeader>(insertAchievementQuery, [userId, achievementRow['achievement_id']]);
+            });
+
+            return true;
+        }
+
+        return false;
+    } catch (e) {
+        console.error("Failed to update challenge progress:", e);
+        throw new Error((e as Error).message);
+    }
+};
+
+
 export { 
     joinChallenge,
     fetchChallenges,
@@ -241,5 +322,6 @@ export {
     postChallenge,
     leaveChallenge,
     patchChallenge,
-    hasUserJoinedChallenge
+    hasUserJoinedChallenge,
+    updateChallengeProgress
 };

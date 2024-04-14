@@ -8,7 +8,8 @@ import {
   leaveChallengeWithUserId,
   updateChallenge,
   deleteChallengeWhitChallengeId,
-  checkHasUserJoinedChallenge
+  checkHasUserJoinedChallenge,
+  updateUserChallengeProgress
 } from "../controllers/challengeController";
 import { authenticate } from "../../middlewares";
 
@@ -32,5 +33,9 @@ router.delete("/:challengeId", authenticate, deleteChallengeWhitChallengeId);
 // Join and leave a challenge
 router.post("/:challengeId/join", authenticate, joinChallengeWithUserId);
 router.delete("/leave/:challengeId/:userId", authenticate, leaveChallengeWithUserId);
+
+// Update user challenge progress
+router.put("/user/:userId/:challengeId/progress", authenticate, updateUserChallengeProgress);
+
 
 export default router;
