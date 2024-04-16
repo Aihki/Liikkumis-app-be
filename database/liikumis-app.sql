@@ -133,7 +133,20 @@
     (challenge_name, description, start_date, end_date, target_type, target_value, active) 
     VALUES
     ('30-Day Running Challenge', 'Complete 50 kilometers of running within 30 days to improve stamina and overall health.', '2024-01-01', '2024-01-31', 'Distance', 50.00, TRUE),
-    ('10-Day Running Challenge', 'Complete 20 kilometers of running within 10 days to boost your quick sprint capabilities.', '2024-01-01', '2024-01-11', 'Distance', 20.00, TRUE);
+    ('10-Day Running Challenge', 'Complete 20 kilometers of running within 10 days to boost your quick sprint capabilities.', '2024-01-01', '2024-01-11', 'Distance', 20.00, TRUE),
+    ('Bronze Strength', 'Complete 100 repetitions of any strength exercises.', CURRENT_DATE, '9999-12-31', 'Repetition', 100.00, TRUE),
+    ('Silver Strength', 'Complete 500 repetitions of any strength exercises.', CURRENT_DATE, '9999-12-31', 'Repetition', 500.00, TRUE),
+    ('Gold Strength', 'Complete 1000 repetitions of any strength exercises.', CURRENT_DATE, '9999-12-31', 'Repetition', 1000.00, TRUE),
+    ('Platinum Strength', 'Achieve a grand total of 10000 repetitions across all your workouts.', CURRENT_DATE, '9999-12-31', 'Repetition', 10000.00, TRUE);
+
+
+
+    INSERT INTO Achievements (title, description, criterion, criterion_detail) VALUES
+    ('Bronze Strength Achiever', 'Awarded for completing the Bronze Strength Challenge.', 'CompleteChallenge', 'Bronze Strength'),
+    ('Silver Strength Achiever', 'Awarded for completing the Silver Strength Challenge.', 'CompleteChallenge', 'Silver Strength'),
+    ('Gold Strength Achiever', 'Awarded for completing the Gold Strength Challenge.', 'CompleteChallenge', 'Gold Strength'),
+    ('Platinum Strength Achiever', 'Awarded for completing the Platinum Strength Challenge.', 'CompleteChallenge', 'Platinum Strength');
+
 
     INSERT INTO Achievements (title, description, criterion, criterion_detail) VALUES
     ('10-Day Running Conqueror', 'Awarded for completing the 10-Day Running Challenge.', 'CompleteChallenge', '10-Day Running Challenge');
