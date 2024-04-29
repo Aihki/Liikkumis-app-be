@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { addOrUpdatePersonalBest, deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, getPersonalBest, postExercise, updateSpecificExercise } from '../models/exerciseModel';
+import { addOrUpdatePersonalBest, comparePersonalBest, deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, getPersonalBest, getPersonalBestForProfile, postExercise, updateSpecificExercise } from '../models/exerciseModel';
 
 
 const getUsersExercise = async (req: Request, res: Response) => {
@@ -112,6 +112,31 @@ const getPersonalBestByExerciseName = async (req: Request, res: Response) => {
     }   
 };
 
+const getPbCompare = async (req: Request, res: Response) => {
+    try {
+        const { userId, exerciseName } = req.params;
+        const personalBest = await comparePersonalBest(parseInt(userId), exerciseName);
+
+        if (personalBest) {
+            res.json(personalBest);
+        } else {
+            res.status(404).json({ message: "No personal best found or updated." });
+        }
+    } catch (error) {
+        res.status(500).json({error: (error as Error).message});
+    }
+};
+
+
+const pBForProfile = async (req: Request, res: Response) => {
+    try {
+        const { userId } = req.params;
+        const personalBest = await getPersonalBestForProfile(parseInt(userId));
+        res.json(personalBest).status(200);
+    } catch (error) {
+        res.status(500).json({message: 'No personal best found'})
+    }
+};
 
 
 
@@ -124,5 +149,7 @@ export {
     modifySpecificExercise,
     addExercise,
     removeExercise,
-    getPersonalBestByExerciseName
+    getPersonalBestByExerciseName,
+    getPbCompare,
+    pBForProfile
 };
