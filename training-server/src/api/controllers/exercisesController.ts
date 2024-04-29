@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { addOrUpdatePersonalBest, comparePersonalBest, deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, getPersonalBest, getPersonalBestForProfile, postExercise, updateSpecificExercise } from '../models/exerciseModel';
+import { addOrUpdatePersonalBest, comparePersonalBest, deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, getPersonalBest, getPersonalBestForProfile, postExercise, updateExerciseStatus, updateSpecificExercise } from '../models/exerciseModel';
 
 
 const getUsersExercise = async (req: Request, res: Response) => {
@@ -97,6 +97,19 @@ const removeExercise = async (req: Request, res: Response) => {
     }
 }
 
+const markExerciseAsDone = async (req: Request, res: Response) => {
+    try {
+        const {userId, exerciseId} = req.params;
+        const exercise = await updateExerciseStatus(parseInt(userId), parseInt(exerciseId))
+        if (exercise) {
+            res.status(200).json(exercise)
+            return
+        }
+    } catch (e) {
+        res.status(500).json({error: (e as Error).message});
+    }
+}
+
 const getPersonalBestByExerciseName = async (req: Request, res: Response) => {
     try {
         const { userId, exerciseName } = req.params;
@@ -149,6 +162,7 @@ export {
     modifySpecificExercise,
     addExercise,
     removeExercise,
+    markExerciseAsDone,
     getPersonalBestByExerciseName,
     getPbCompare,
     pBForProfile

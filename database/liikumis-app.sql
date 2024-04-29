@@ -54,6 +54,7 @@
         exercise_weight INT,
         exercise_reps INT,
         exercise_sets INT,
+        exercise_completed TINYINT(1) DEFAULT 0,
         exercise_duration INT,
         exercise_distance INT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

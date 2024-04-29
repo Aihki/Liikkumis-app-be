@@ -1,5 +1,5 @@
 import express from "express";
-import { addExercise, getUsersSpecificExercise, getUsersExercise, modifySpecificExercise, removeExercise, getExercisesByWorkoutId, getDefaultExercise, getPersonalBestByExerciseName, getPbCompare, pBForProfile } from "../controllers/exercisesController";
+import { addExercise, getUsersSpecificExercise, getUsersExercise, modifySpecificExercise, removeExercise, getExercisesByWorkoutId, getDefaultExercise, getPersonalBestByExerciseName, getPbCompare, pBForProfile, markExerciseAsDone } from "../controllers/exercisesController";
 import { authenticate } from "../../middlewares";
 
 const router = express.Router();
@@ -13,6 +13,7 @@ router.get("/:userId/compare-pb/:exerciseName", getPbCompare);
 router.get("/:userId/profile/personal-best", pBForProfile)
 router.post("/:userId", authenticate, addExercise);
 router.put("/:userId/:exerciseId", modifySpecificExercise);
+router.patch("/:userId/done/:exerciseId", markExerciseAsDone)
 router.delete("/:userId/:exerciseId", authenticate, removeExercise);
 
 export default router;

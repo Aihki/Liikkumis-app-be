@@ -134,6 +134,21 @@ const deleteExercise = async (userId: number, exerciseId: number) => {
   }
 };
 
+const updateExerciseStatus = async (userId: number, exerciseId: number) => {
+  try {
+    const [rows] = await promisePool.execute<RowDataPacket [] & Exercise[]>(
+      `UPDATE Exercises SET exercise_completed = 1 WHERE user_id = ? AND exercise_id = ?`,
+      [userId, exerciseId]
+    );
+    if (rows.length === 0) {
+      return null
+    }
+    return rows
+  } catch (e) {
+    throw new Error((e as Error).message);
+  }
+};
+
 const getPersonalBest = async (userId: number, exerciseName: string) => {
   try {
     const [rows] = await promisePool.execute<RowDataPacket[]>(
@@ -261,6 +276,7 @@ export {
   updateSpecificExercise,
   postExercise,
   deleteExercise,
+  updateExerciseStatus,
   getPersonalBest,
   addOrUpdatePersonalBest,
   comparePersonalBest,
