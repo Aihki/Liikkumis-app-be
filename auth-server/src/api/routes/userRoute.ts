@@ -124,7 +124,7 @@ router.post(
  *       "user": {
  *         "userId": 5,
  *         "username": "testuser",
- *         "email": "ile@mail.fi",
+ *         "email": "user@mail.fi",
  *         "createdAt": "2024-01-01T19:24:37.000Z",
  *         "levelName": "User"
  *       }
@@ -255,7 +255,7 @@ router.route('/:id').get(param('id').isNumeric(), userGet);
  *       "user": {
  *         "userId": 5,
  *         "username": "testuser",
- *         "email": "ile@mail.fi",
+ *         "email": "user@mail.fi",
  *         "createdAt": "2024-01-01T19:24:37.000Z",
  *         "levelName": "User"
  *       }
