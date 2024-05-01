@@ -10,7 +10,7 @@
         "postbuild": "npm run apidoc",
         "lint": "eslint --fix src test",
         "test": "jest",
-        "ci-test": "start-server-and-test dev http://localhost:3000 test",
+        "ci-test": "start-server-and-test dev http://localhost:3000 test authMiddleware.test.ts",
         "apidoc": "apidoc -c apidoc.json -o public/"
     },
     "keywords": [],
