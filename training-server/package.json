@@ -10,6 +10,7 @@
         "postbuild": "npm run apidoc",
         "lint": "eslint --fix src test",
         "test": "jest",
+        "ci-test": "start-server-and-test dev http://localhost:3000 test",
         "apidoc": "apidoc -c apidoc.json -o public/"
     },
     "keywords": [],
@@ -48,6 +49,7 @@
         "jest": "^29.7.0",
         "nodemon": "^2.0.20",
         "prettier": "^2.8.4",
+        "start-server-and-test": "^2.0.3",
         "supertest": "^6.3.4",
         "ts-jest": "^29.1.2",
         "ts-node": "^10.9.1",
