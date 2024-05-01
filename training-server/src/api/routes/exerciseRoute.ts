@@ -287,6 +287,9 @@ router.post("/:userId", authenticate, addExercise);
  */
 router.put("/:userId/:exerciseId", modifySpecificExercise);
 
+
+router.patch("/:userId/done/:exerciseId", markExerciseAsDone);
+
 /**
  * @api {delete} /exercises/:userId/:exerciseId Remove exercise
  * @apiName RemoveExercise
