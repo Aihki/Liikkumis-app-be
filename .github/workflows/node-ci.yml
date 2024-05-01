@@ -41,6 +41,14 @@ jobs:
       run: npm i
       working-directory: ./training-server
 
+    - name: Run dev server for Training Server
+      run: npm run dev --if-present
+      working-directory: ./training-server
+
+    - name : Run tests for Training Server
+      run: npx jest
+      working-directory: ./training-server
+
     - name: Build Training Server
       run: npm run build --if-present
       working-directory: ./training-server
