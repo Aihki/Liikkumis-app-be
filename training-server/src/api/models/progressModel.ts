@@ -16,6 +16,7 @@ const fetchProgress = async (userId: number) => {
     throw new Error((e as Error).message);
   }
 };
+
 const postProgress = async (
   progress: Omit<UserProgress, "created_at" | "progress_id">, userId: number
 ) => {

@@ -5,7 +5,7 @@ import app from '../../src/app';
 describe('GET /api/v1/exercises/', () => {
     it('should return an array of exercises with the correct properties', async () => {
         const response = await request(app)
-            .get('/api/v1/exercises/1/9');
+            .get('/api/v1/exercises/1/11');
         expect(response.statusCode).toBe(200);
         expect(response.body).toEqual(expect.arrayContaining([
             expect.objectContaining({

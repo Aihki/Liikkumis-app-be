@@ -111,7 +111,7 @@ router.get("/", getDefaultExercise);
  *         "weight": null
  *     }
  */
-router.get("/:userId/:exerciseId", authenticate, getUsersSpecificExercise);
+router.get("/:userId/:exerciseId", getUsersSpecificExercise);
 
 /**
  * @api {get} /exercises/:userId/workout/:userWorkoutId Get exercises by workout id
