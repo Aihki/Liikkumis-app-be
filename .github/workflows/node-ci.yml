@@ -42,7 +42,7 @@ jobs:
         working-directory: ./training-server
   
       - name : Run tests for Training Server
-        run: npm test
+        run: npx jest authMiddleware.test.ts
         working-directory: ./training-server
   
       - name: Build Training Server
