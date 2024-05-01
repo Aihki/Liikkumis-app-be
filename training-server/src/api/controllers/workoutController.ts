@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { addWorkout, deleteWorkout, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, fetchWorkouts, getCompletedWorkoutCount, getMPopularWorkoutType, getWorkoutStatusCompleted, getWorkoutWhitStatusCompleted, setWorkoutStatusCompleted, updateWorkout } from '../models/workoutModel';
+import { addWorkout, deleteWorkout, fetchCompletedExercisesCount, fetchWorkoutByUserId, fetchWorkoutByWorkoutId, fetchWorkouts, getCompletedWorkoutCount, getMPopularWorkoutType, getWorkoutStatusCompleted, getWorkoutWhitStatusCompleted, setWorkoutStatusCompleted, updateWorkout } from '../models/workoutModel';
 
 const getWorkout = async (req: Request, res: Response) => {
     try {
@@ -15,14 +15,12 @@ const getWorkout = async (req: Request, res: Response) => {
 
 const getWorkoutByUserId = async (req: Request, res: Response) => {
     try {
-        const {userId} = req.params;
+        const { userId } = req.params;
         const workout = await fetchWorkoutByUserId(parseInt(userId));
-        if (workout) {
-            res.status(200).json(workout);
-            return;
-        }
+        res.status(200).json(workout);
+        return;
     } catch (e) {
-        res.status(500).json({error: (e as Error).message});
+        res.status(500).json({ error: (e as Error).message, stack: (e as Error).stack });
     }
 }
 
@@ -147,6 +145,18 @@ const getMostPopularWorkoutType = async (req: Request, res: Response) => {
     }
 };
 
+const getCompletedExercisesCount = async (req: Request, res: Response) => {     
+    const { userId, workoutId } = req.params;
+    try {
+        const count = await fetchCompletedExercisesCount(parseInt(userId), parseInt(workoutId));
+        res.status(200).json({count: count}); 
+    } catch (e) {
+        console.error("Failed to fetch completed exercises count:", e);
+        res.status(500).json({ error: (e as Error).message });
+    }
+};
+
+
 export {
     getWorkout, 
     getWorkoutByUserId, 
@@ -158,5 +168,6 @@ export {
     getCompletedWorkouts,
     getWorkoutStatus,
     getCountOfCompletedWorkouts,
-    getMostPopularWorkoutType
+    getMostPopularWorkoutType,
+    getCompletedExercisesCount
     };

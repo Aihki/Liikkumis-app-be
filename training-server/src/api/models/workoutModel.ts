@@ -181,6 +181,23 @@ const getMPopularWorkoutType = async () => {
   }
 };
 
+const fetchCompletedExercisesCount = async (userId: number, workoutId: number) => {
+  try {
+    const [rows] = await promisePool.execute<RowDataPacket[]>(
+      `SELECT COUNT(*) AS completed_exercises_count
+       FROM Exercises
+       WHERE user_id = ?
+         AND user_workout_id = ?
+         AND exercise_completed = 1;`,
+      [userId, workoutId]
+    );
+    return rows[0].completed_exercises_count;
+  } catch (error) {
+    console.error('Error fetching completed exercises count:', error);
+    throw new Error((error as Error).message);
+  }
+};
+
 
 export {
   fetchWorkouts,
@@ -193,5 +210,6 @@ export {
   getWorkoutWhitStatusCompleted,
   getWorkoutStatusCompleted,
   getCompletedWorkoutCount,
-  getMPopularWorkoutType
+  getMPopularWorkoutType,
+  fetchCompletedExercisesCount
 };

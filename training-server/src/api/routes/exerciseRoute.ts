@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/:userId", authenticate, getUsersExercise);
 router.get("/", getDefaultExercise)
-router.get("/:userId/:exerciseId", authenticate, getUsersSpecificExercise);
+router.get("/:userId/:exerciseId", getUsersSpecificExercise);
 router.get("/:userId/workout/:userWorkoutId", getExercisesByWorkoutId);
 router.get("/:userId/personal-best/:exerciseName", authenticate, getPersonalBestByExerciseName);
 router.get("/:userId/compare-pb/:exerciseName", getPbCompare);

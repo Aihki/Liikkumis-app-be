@@ -132,9 +132,16 @@
 
     INSERT INTO Challenges 
     (challenge_name, description, start_date, end_date, target_type, target_value, active) 
-    VALUES
-    ('30-Day Running Challenge', 'Complete 50 kilometers of running within 30 days to improve stamina and overall health.', '2024-01-01', '2024-01-31', 'Distance', 50.00, TRUE),
-    ('10-Day Running Challenge', 'Complete 20 kilometers of running within 10 days to boost your quick sprint capabilities.', '2024-01-01', '2024-01-11', 'Distance', 20.00, TRUE),
+VALUES
+    ('Bronze Running', 'Complete 50 kilometers of running.', CURRENT_DATE, '9999-12-31', 'Distance', 50.00, TRUE),
+    ('Silver Running', 'Complete 250 kilometers of running.', CURRENT_DATE, '9999-12-31', 'Distance', 250.00, TRUE),
+    ('Gold Running', 'Complete 500 kilometers of running.', CURRENT_DATE, '9999-12-31', 'Distance', 500.00, TRUE),
+    ('Platinum Running', 'Complete 1000 kilometers of running.', CURRENT_DATE, '9999-12-31', 'Distance', 1000.00, TRUE);
+
+-- Existing entries for strength challenges (as per your original setup)
+INSERT INTO Challenges 
+    (challenge_name, description, start_date, end_date, target_type, target_value, active) 
+VALUES
     ('Bronze Strength', 'Complete 100 repetitions of any strength exercises.', CURRENT_DATE, '9999-12-31', 'Repetition', 100.00, TRUE),
     ('Silver Strength', 'Complete 500 repetitions of any strength exercises.', CURRENT_DATE, '9999-12-31', 'Repetition', 500.00, TRUE),
     ('Gold Strength', 'Complete 1000 repetitions of any strength exercises.', CURRENT_DATE, '9999-12-31', 'Repetition', 1000.00, TRUE),
@@ -143,17 +150,17 @@
 
 
     INSERT INTO Achievements (title, description, criterion, criterion_detail) VALUES
-    ('Bronze Strength Achiever', 'Awarded for completing the Bronze Strength Challenge.', 'CompleteChallenge', 'Bronze Strength'),
-    ('Silver Strength Achiever', 'Awarded for completing the Silver Strength Challenge.', 'CompleteChallenge', 'Silver Strength'),
-    ('Gold Strength Achiever', 'Awarded for completing the Gold Strength Challenge.', 'CompleteChallenge', 'Gold Strength'),
-    ('Platinum Strength Achiever', 'Awarded for completing the Platinum Strength Challenge.', 'CompleteChallenge', 'Platinum Strength');
+    ('Bronze Strength', 'Awarded for completing the Bronze Strength Challenge.', 'CompleteChallenge', 'Bronze Strength'),
+    ('Silver Strength', 'Awarded for completing the Silver Strength Challenge.', 'CompleteChallenge', 'Silver Strength'),
+    ('Gold Strength', 'Awarded for completing the Gold Strength Challenge.', 'CompleteChallenge', 'Gold Strength'),
+    ('Platinum Strength', 'Awarded for completing the Platinum Strength Challenge.', 'CompleteChallenge', 'Platinum Strength');
 
 
     INSERT INTO Achievements (title, description, criterion, criterion_detail) VALUES
-    ('10-Day Running Conqueror', 'Awarded for completing the 10-Day Running Challenge.', 'CompleteChallenge', '10-Day Running Challenge');
-
-    INSERT INTO Achievements (title, description, criterion, criterion_detail) 
-    VALUES ('30-Day Running Conqueror', 'Awarded for completing the 30-Day Running Challenge.', 'CompleteChallenge', '30-Day Running Challenge');
+    ('Bronze Running', 'Awarded for completing the Bronze Running Challenge.', 'CompleteChallenge', 'Bronze Running'),
+    ('Silver Running', 'Awarded for completing the Silver Running Challenge.', 'CompleteChallenge', 'Silver Running'),
+    ('Gold Running', 'Awarded for completing the Gold Running Challenge.', 'CompleteChallenge', 'Gold Running'),
+    ('Platinum Running', 'Awarded for completing the Platinum Running Challenge.', 'CompleteChallenge', 'Platinum Running');
 
     INSERT INTO UserLevels (level_name) VALUES ('Admin'), ('User'), ('Guest');
     INSERT INTO Exercises (exercise_id, exercise_name , exercise_weight, exercise_reps) VALUES (1, 'Bench Press', 100, 10), (2, 'Squat', 150, 10), (3, 'Deadlift', 200, 10), (4, 'Pull-up', 0, 10), (5, 'Push-up', 0, 10), (6, 'Sit-up', 0, 10), (7, 'Plank', 0, 10);  
