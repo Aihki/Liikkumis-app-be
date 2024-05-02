@@ -77,7 +77,7 @@
         description TEXT,
         start_date DATE,
         end_date DATE,
-        target_type ENUM('Distance', 'Weight', 'Time', 'Repetition') NOT NULL,
+        target_type ENUM('Distance', 'Weight', 'Time', 'Repetition', 'Body Weight Repetition') NOT NULL,
         target_value DECIMAL(10,2) NOT NULL,
         active BOOLEAN DEFAULT TRUE
     );
@@ -131,32 +131,43 @@
     );
 
     INSERT INTO Challenges 
-    (challenge_name, description, start_date, end_date, target_type, target_value, active) 
-VALUES
+    (challenge_name, description, start_date, end_date, target_type, target_value, active) VALUES
     ('Bronze Running', 'Complete 50 kilometers of running.', CURRENT_DATE, '9999-12-31', 'Distance', 50.00, TRUE),
     ('Silver Running', 'Complete 250 kilometers of running.', CURRENT_DATE, '9999-12-31', 'Distance', 250.00, TRUE),
     ('Gold Running', 'Complete 500 kilometers of running.', CURRENT_DATE, '9999-12-31', 'Distance', 500.00, TRUE),
     ('Platinum Running', 'Complete 1000 kilometers of running.', CURRENT_DATE, '9999-12-31', 'Distance', 1000.00, TRUE);
 
--- Existing entries for strength challenges (as per your original setup)
-INSERT INTO Challenges 
-    (challenge_name, description, start_date, end_date, target_type, target_value, active) 
-VALUES
+
+    INSERT INTO Challenges 
+    (challenge_name, description, start_date, end_date, target_type, target_value, active) VALUES
     ('Bronze Strength', 'Complete 100 repetitions of any strength exercises.', CURRENT_DATE, '9999-12-31', 'Repetition', 100.00, TRUE),
     ('Silver Strength', 'Complete 500 repetitions of any strength exercises.', CURRENT_DATE, '9999-12-31', 'Repetition', 500.00, TRUE),
     ('Gold Strength', 'Complete 1000 repetitions of any strength exercises.', CURRENT_DATE, '9999-12-31', 'Repetition', 1000.00, TRUE),
     ('Platinum Strength', 'Achieve a grand total of 10000 repetitions across all your workouts.', CURRENT_DATE, '9999-12-31', 'Repetition', 10000.00, TRUE);
 
+    INSERT INTO Challenges 
+    (challenge_name, description, start_date, end_date, target_type, target_value, active) VALUES 
+    ('Bronze Bodyweight', 'Complete 100 repetitions of any bodyweight exercises.', CURRENT_DATE, '9999-12-31', 'Body Weight Repetition', 100.00, TRUE),
+    ('Silver Bodyweight', 'Complete 500 repetitions of any bodyweight exercises.', CURRENT_DATE, '9999-12-31', 'Body Weight Repetition', 500.00, TRUE),
+    ('Gold Bodyweight', 'Complete 1000 repetitions of any bodyweight exercises.', CURRENT_DATE, '9999-12-31', 'Body Weight Repetition', 1000.00, TRUE),
+    ('Platinum Bodyweight', 'Achieve a grand total of 10000 repetitions across all your bodyweight workouts.', CURRENT_DATE, '9999-12-31', 'Body Weight Repetition', 10000.00, TRUE);
 
-
-    INSERT INTO Achievements (title, description, criterion, criterion_detail) VALUES
+    INSERT INTO Achievements 
+    (title, description, criterion, criterion_detail) VALUES
     ('Bronze Strength', 'Awarded for completing the Bronze Strength Challenge.', 'CompleteChallenge', 'Bronze Strength'),
     ('Silver Strength', 'Awarded for completing the Silver Strength Challenge.', 'CompleteChallenge', 'Silver Strength'),
     ('Gold Strength', 'Awarded for completing the Gold Strength Challenge.', 'CompleteChallenge', 'Gold Strength'),
     ('Platinum Strength', 'Awarded for completing the Platinum Strength Challenge.', 'CompleteChallenge', 'Platinum Strength');
 
+    INSERT INTO Achievements 
+    (title, description, criterion, criterion_detail) VALUES
+    ('Bronze Bodyweight', 'Awarded for completing the Bronze Bodyweight Challenge.', 'CompleteChallenge', 'Bronze Bodyweight'),
+    ('Silver Bodyweight', 'Awarded for completing the Silver Bodyweight Challenge.', 'CompleteChallenge', 'Silver Bodyweight'),
+    ('Gold Bodyweight', 'Awarded for completing the Gold Bodyweight Challenge.', 'CompleteChallenge', 'Gold Bodyweight'),
+    ('Platinum Bodyweight', 'Awarded for completing the Platinum Bodyweight Challenge.', 'CompleteChallenge', 'Platinum Bodyweight');
 
-    INSERT INTO Achievements (title, description, criterion, criterion_detail) VALUES
+    INSERT INTO Achievements 
+    (title, description, criterion, criterion_detail) VALUES
     ('Bronze Running', 'Awarded for completing the Bronze Running Challenge.', 'CompleteChallenge', 'Bronze Running'),
     ('Silver Running', 'Awarded for completing the Silver Running Challenge.', 'CompleteChallenge', 'Silver Running'),
     ('Gold Running', 'Awarded for completing the Gold Running Challenge.', 'CompleteChallenge', 'Gold Running'),
