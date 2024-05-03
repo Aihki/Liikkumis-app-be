@@ -1,5 +1,6 @@
 import {Request, Response} from 'express';
 import { deleteFoodDiary, fetchFoodDiary, postFoodDiary, updateFoodDiary } from '../models/foodDiaryModel';
+import { log } from 'console';
 
 const getFoodDiary = async (req: Request, res: Response) => {
     try {
@@ -19,6 +20,7 @@ const addFoodDiary = async (req: Request, res: Response) => {
         const foodDiary = req.body;
         const {userId} = req.params;
         const addedFoodDiary = await postFoodDiary(parseInt(userId), foodDiary);
+        console.log(addedFoodDiary);
         if (addedFoodDiary) {
             res.status(200).json(addedFoodDiary);
             return;
