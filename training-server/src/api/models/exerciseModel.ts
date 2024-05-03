@@ -271,23 +271,23 @@ const getPersonalBestForProfile = async (userId: number) => {
 
 const getLastMonthActivity = async (userId: number)  => {
   const query = `
-  SELECT
-  w.workout_date,
-  w.workout_type,
-  w.workout_name,
-  COUNT(e.exercise_id) AS total_exercises
-FROM
-  UserWorkouts AS w
-LEFT JOIN
-  Exercises AS e ON w.user_workout_id = e.user_workout_id
-WHERE
-  w.user_id = ?
-  AND w.workout_date >= DATE_FORMAT(NOW() ,'%Y-%m-01')
-GROUP BY
-  w.user_workout_id, w.workout_date, w.workout_type, w.workout_name
-ORDER BY
-  w.workout_date DESC;
-  `;
+    SELECT
+    w.workout_date,
+    w.workout_type,
+    w.workout_name,
+    COUNT(e.exercise_id) AS total_exercises
+  FROM
+    UserWorkouts AS w
+  LEFT JOIN
+    Exercises AS e ON w.user_workout_id = e.user_workout_id
+  WHERE
+    w.user_id = ?
+    AND w.workout_date >= DATE_FORMAT(NOW() ,'%Y-%m-01')
+  GROUP BY
+    w.user_workout_id, w.workout_date, w.workout_type, w.workout_name
+  ORDER BY
+    w.workout_date DESC;
+    `;
 
   try {
       const [rows] = await promisePool.execute<RowDataPacket[]>(query, [userId]);
