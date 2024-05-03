@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { addOrUpdatePersonalBest, comparePersonalBest, deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, getPersonalBest, getPersonalBestForProfile, postExercise, updateExerciseStatus, updateSpecificExercise } from '../models/exerciseModel';
+import { addOrUpdatePersonalBest, comparePersonalBest, deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, getLastMonthActivity, getPersonalBest, getPersonalBestForProfile, postExercise, updateExerciseStatus, updateSpecificExercise } from '../models/exerciseModel';
 
 
 const getUsersExercise = async (req: Request, res: Response) => {
@@ -151,6 +151,16 @@ const pBForProfile = async (req: Request, res: Response) => {
     }
 };
 
+const getActivity = async (req: Request, res: Response) => {
+    try {
+        const { userId } = req.params;
+        const activity = await getLastMonthActivity(parseInt(userId));
+        res.status(200).json(activity);
+    } catch (error) {
+        res.status(500).json({message: 'No activity found'})
+    }
+};
+
 
 
 
@@ -165,5 +175,6 @@ export {
     markExerciseAsDone,
     getPersonalBestByExerciseName,
     getPbCompare,
-    pBForProfile
+    pBForProfile,
+    getActivity
 };

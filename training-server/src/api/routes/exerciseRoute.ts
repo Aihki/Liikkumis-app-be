@@ -1,5 +1,5 @@
 import express from "express";
-import { addExercise, getUsersSpecificExercise, getUsersExercise, modifySpecificExercise, removeExercise, getExercisesByWorkoutId, getDefaultExercise, getPersonalBestByExerciseName, getPbCompare, pBForProfile, markExerciseAsDone } from "../controllers/exercisesController";
+import { addExercise, getUsersSpecificExercise, getUsersExercise, modifySpecificExercise, removeExercise, getExercisesByWorkoutId, getDefaultExercise, getPersonalBestByExerciseName, getPbCompare, pBForProfile, markExerciseAsDone, getActivity } from "../controllers/exercisesController";
 import { authenticate } from "../../middlewares";
 
 const router = express.Router();
@@ -82,6 +82,9 @@ router.get("/:userId", authenticate, getUsersExercise);
  */
 router.get("/", getDefaultExercise);
 
+
+router.get("/:userId/activity", getActivity);
+
 /**
  * @api {get} /exercises/:userId/:exerciseId Get user's specific exercise
  * @apiName GetUsersSpecificExercise
@@ -153,6 +156,7 @@ router.get("/:userId/:exerciseId", getUsersSpecificExercise);
  *     ]
  */
 router.get("/:userId/workout/:userWorkoutId", getExercisesByWorkoutId);
+
 
 /**
  * @api {get} /exercises/:userId/personal-best/:exerciseName Get personal best by exercise name

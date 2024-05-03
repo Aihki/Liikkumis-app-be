@@ -1,6 +1,7 @@
 import { FieldPacket, RowDataPacket } from "mysql2";
 import promisePool from "../../lib/db";
 import { Exercise } from "@sharedTypes/DBTypes";
+import { Pool } from "mysql2/typings/mysql/lib/Pool";
 
 const fetchUsersExercise = async (userId: number) => {
   try {
@@ -268,6 +269,35 @@ const getPersonalBestForProfile = async (userId: number) => {
   }
 };
 
+const getLastMonthActivity = async (userId: number)  => {
+  const query = `
+  SELECT
+  w.workout_date,
+  w.workout_type,
+  w.workout_name,
+  COUNT(e.exercise_id) AS total_exercises
+FROM
+  UserWorkouts AS w
+LEFT JOIN
+  Exercises AS e ON w.user_workout_id = e.user_workout_id
+WHERE
+  w.user_id = ?
+  AND w.workout_date >= DATE_FORMAT(NOW() ,'%Y-%m-01')
+GROUP BY
+  w.user_workout_id, w.workout_date, w.workout_type, w.workout_name
+ORDER BY
+  w.workout_date DESC;
+  `;
+
+  try {
+      const [rows] = await promisePool.execute<RowDataPacket[]>(query, [userId]);
+      return rows.length > 0 ? rows : null;
+  } catch (error) {
+      console.error("Error fetching last month's activity for user", userId, error);
+      throw new Error("Failed to fetch activity data");
+  }
+};
+
 export {
   fetchUsersExercise,
   fetchDefaultExercise,
@@ -281,4 +311,5 @@ export {
   addOrUpdatePersonalBest,
   comparePersonalBest,
   getPersonalBestForProfile,
+  getLastMonthActivity
 };
