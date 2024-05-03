@@ -22,6 +22,16 @@ const postProgress = async (
 ) => {
     try {
     progress.progress_date = new Date(progress.progress_date);
+    
+    // Delete existing record for the given user and date
+    await promisePool.execute<RowDataPacket[]>(
+      `
+            DELETE FROM UserProgress 
+            WHERE user_id = ? AND DATE(progress_date) = DATE(?)
+        `,
+        [userId, progress.progress_date]
+    );
+
     const [rows] = await promisePool.execute<RowDataPacket[]>(
       `
             INSERT INTO UserProgress (
@@ -59,7 +69,8 @@ const postProgress = async (
     console.error((e as Error).message);
     throw new Error((e as Error).message);
   }
-};
+}
+
 
 const updateProgress = async (userId: number, progress: UserProgress) => {
   try {
