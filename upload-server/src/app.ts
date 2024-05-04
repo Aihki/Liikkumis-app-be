@@ -6,6 +6,7 @@ import cors from 'cors';
 
 import {notFound, errorHandler} from './middlewares';
 import api from './api';
+import path from 'path';
 
 const app = express();
 
@@ -21,9 +22,8 @@ app.use(
 app.use(cors());
 app.use(express.json());
 
-app.use('/uploads', express.static(
-  '/home/Liikkumis-app-be/upload-server/dist/upload-server/src/uploads',
-), );
+const uploadsPath = path.join(__dirname, 'Liikkumis-app-be', 'upload-server', 'dist', 'upload-server', 'src', 'uploads');
+app.use('/uploads', express.static(uploadsPath));
 
 // serve public folder for apidoc
 app.use(express.static('public'));
