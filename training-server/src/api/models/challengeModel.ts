@@ -177,7 +177,6 @@ const joinChallenge = async (userId: number, challengeId: number): Promise<boole
             `INSERT INTO UserChallenges (user_id, challenge_id, start_date, progress, completed) VALUES (?, ?, CURDATE(), 0, FALSE)`,
             [userId, challengeId]
         );
-        // If result  1 insert was successful
         return result.affectedRows === 1;
     } catch (e) {
         console.error("Failed to join challenge:", e);

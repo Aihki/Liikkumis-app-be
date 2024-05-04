@@ -1,6 +1,5 @@
 import {Request, Response} from 'express';
 import { deleteChallenge, fetchChallengeById, fetchChallenges, fetchUserChallenges, hasUserJoinedChallenge, joinChallenge, leaveChallenge, patchChallenge, postChallenge, updateChallengeProgress } from '../models/challengeModel';
-import { log } from 'console';
 
 
 const getChallenges = async (req: Request, res: Response) => {
@@ -121,8 +120,6 @@ const checkHasUserJoinedChallenge = async (req: Request, res: Response) => {
     try {
         const { userId, challengeId } = req.params;
         const hasJoined = await hasUserJoinedChallenge(parseInt(userId), parseInt(challengeId));
-        
-        // Send a response regardless of whether the user has joined the challenge or not
         res.status(200).json({ success: true, hasJoined: hasJoined });
     } catch (e) {
         console.error("Failed to check if user has joined challenge:", e);

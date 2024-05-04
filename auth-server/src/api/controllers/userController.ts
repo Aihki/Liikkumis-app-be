@@ -255,7 +255,6 @@ const checkToken = async (
   next: NextFunction
 ) => {
   const userFromToken = res.locals.user;
-  // check if user exists in database
   const user = await getUserById(userFromToken.user_id);
   if (!user) {
     next(new CustomError('User not found', 404));

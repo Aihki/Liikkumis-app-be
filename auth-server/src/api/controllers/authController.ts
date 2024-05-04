@@ -41,7 +41,6 @@ const login = async (
       return;
     }
 
-    // delete user.password before sending data back to client
     const outUser: Omit<UserWithLevel, "password"> = {
       user_id: user.user_id,
       username: user.username,

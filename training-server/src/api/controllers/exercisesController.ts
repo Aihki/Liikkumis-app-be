@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import { addOrUpdatePersonalBest, comparePersonalBest, deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, getLastMonthActivity, getPersonalBest, getPersonalBestForProfile, postExercise, updateExerciseStatus, updateSpecificExercise } from '../models/exerciseModel';
+import { comparePersonalBest, deleteExercise, fetchDefaultExercise, fetchExercisesByWorkoutId, fetchUsersExercise, fetchUsersSpecificExercise, getLastMonthActivity, getPersonalBest, getPersonalBestForProfile, postExercise, updateExerciseStatus, updateSpecificExercise } from '../models/exerciseModel';
 
 
 const getUsersExercise = async (req: Request, res: Response) => {

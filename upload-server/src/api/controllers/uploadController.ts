@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import {FileInfo, TokenContent} from '@sharedTypes/DBTypes';
 import {MessageResponse} from '@sharedTypes/MessageTypes';
-import { log } from 'console';
+
 
 const uploadFile = async (
   req: Request,
@@ -66,10 +66,8 @@ const deleteFile = async (
       return;
     }
 
-    // check if not admin
+
     if (res.locals.user.level_name !== 'Admin') {
-      // get filename without extension for jwt verification
-      // filename has multiple dots, so split by dot and remove last element
       const filenameWithoutExtension = filename
         .split('.')
         .slice(0, -1)
@@ -82,7 +80,6 @@ const deleteFile = async (
 
       console.log('filenameWithoutExtension', filenameWithoutExtension);
 
-      // check from token if user is owner of file
       const decodedTokenFromFileName = jwt.verify(
         filenameWithoutExtension,
         process.env.JWT_SECRET as string

@@ -1,6 +1,6 @@
 import {Request, Response} from 'express';
 import { deleteFoodDiary, fetchFoodDiary, postFoodDiary, updateFoodDiary } from '../models/foodDiaryModel';
-import { log } from 'console';
+
 
 const getFoodDiary = async (req: Request, res: Response) => {
     try {

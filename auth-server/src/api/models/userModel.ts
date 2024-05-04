@@ -165,7 +165,7 @@ const modifyUser = async (
       SET ?
       WHERE user_id = ?
       `,
-      [user, id] // Adjust according to User type
+      [user, id]
     );
 
     const header: ResultSetHeader = result as ResultSetHeader;
@@ -186,8 +186,6 @@ const deleteUser = async (id: number): Promise<UserDeleteResponse | null> => {
   const connection = await promisePool.getConnection();
   try {
     await connection.beginTransaction();
-
-    // Execute various DELETE operations
     await connection.execute("DELETE FROM FoodDiary WHERE user_id = ?;", [id]);
     await connection.execute("DELETE FROM Exercises WHERE user_id = ?;", [id]);
     await connection.execute("DELETE FROM UserWorkouts WHERE user_id = ?;", [

@@ -58,7 +58,6 @@ const authenticate = async (
     }
 
     res.locals.user = userFromToken;
-    // token added for deleting media
     res.locals.token = token;
 
     next();
