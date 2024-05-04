@@ -71,7 +71,7 @@ const makeThumbnail = async (
       return;
     }
 
-    const src = path.join(__dirname, '..', 'uploads', req.file.filename);
+    const src = path.join(__dirname, '/uploads', req.file.filename);
     console.log('src')
     console.log(src);
 
