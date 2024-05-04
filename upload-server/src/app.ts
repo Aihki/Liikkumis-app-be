@@ -21,7 +21,9 @@ app.use(
 app.use(cors());
 app.use(express.json());
 
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(
+  '/home/Liikkumis-app-be/upload-server/dist/upload-server/src/uploads',
+), );
 
 // serve public folder for apidoc
 app.use(express.static('public'));
