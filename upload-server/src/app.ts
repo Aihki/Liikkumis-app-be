@@ -6,7 +6,6 @@ import cors from 'cors';
 
 import {notFound, errorHandler} from './middlewares';
 import api from './api';
-import path from 'path';
 
 const app = express();
 
@@ -22,8 +21,9 @@ app.use(
 app.use(cors());
 app.use(express.json());
 
-const uploadsDir = path.join(__dirname, 'uploads');
-app.use('/upload-api/uploads', express.static(uploadsDir));
+app.use('/uploads', express.static(
+  '/home/Liikkumis-app-be/upload-server/dist/upload-server/src/uploads',
+), );
 
 // serve public folder for apidoc
 app.use(express.static('public'));
