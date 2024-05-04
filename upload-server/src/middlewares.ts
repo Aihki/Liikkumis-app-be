@@ -84,7 +84,7 @@ const makeThumbnail = async (
       return;
     }
 
-    await getVideoThumbnail(src);
+    
     next();
   } catch (error) {
     next(new CustomError('Thumbnail not created', 500));

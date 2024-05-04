@@ -22,8 +22,8 @@ app.use(
 app.use(cors());
 app.use(express.json());
 
-const uploadsDir = path.join(__dirname, 'uploads');
-app.use('/upload-api/uploads', express.static(uploadsDir));
+const uploadsDir = '/home/liikkuapp/Liikkumis-app-be/upload-server/dist/upload-server/src/uploads';
+app.use('/uploads', express.static(uploadsDir));
 
 console.log(`Serving static files from: ${uploadsDir}`);
 
