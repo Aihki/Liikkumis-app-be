@@ -22,8 +22,8 @@ app.use(
 app.use(cors());
 app.use(express.json());
 
-const uploadsPath = path.join(__dirname, 'Liikkumis-app-be', 'upload-server', 'dist', 'upload-server', 'src', 'uploads');
-app.use('/uploads', express.static(uploadsPath));
+const uploadsDir = path.join(__dirname, 'Liikkumis-app-be', 'upload-server', 'dist', 'upload-server', 'src', 'uploads');
+app.use('/upload-api/uploads', express.static(uploadsDir));
 
 // serve public folder for apidoc
 app.use(express.static('public'));
