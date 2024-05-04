@@ -1,4 +1,4 @@
-import express from 'express';
+import express  from 'express';
 import {deleteFile, uploadFile} from '../controllers/uploadController';
 import multer, {FileFilterCallback} from 'multer';
 import {authenticate, makeThumbnail} from '../../middlewares';
@@ -15,7 +15,6 @@ const fileFilter = (
     cb(null, false);
   }
 };
-const src = path.join(__dirname, '/uploads', req.file.filename);
 const uploadPath = path.join(__dirname, '..', '..', 'uploads');
 console.log(uploadPath);
 const upload = multer({dest: uploadPath, fileFilter});
